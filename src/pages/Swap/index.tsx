@@ -26,7 +26,8 @@ export default function Swap() {
   const [inputTokenValue, setInputTokenValue] = useState<string>('');
   const [outputTokenValue, setOutputTokenValue] = useState<string>('');
 
-  const label = `${inputTokenValue || 1} ${getUpperCase(information.inputTokenName)} ≈ 4000 ${getUpperCase(information.outputTokenName)}`;
+  const leftSide = `${inputTokenValue || 1} ${getUpperCase(information.inputTokenName)}`;
+  const rightSide = `${outputTokenValue || 100} ${getUpperCase(information.outputTokenName)}`;
   return (
     <Container>
       <ActionContainer>
@@ -93,7 +94,9 @@ export default function Swap() {
         </Block>
       </ActionContainer>
       <Label>
-        {label}
+        <div>{leftSide}</div>
+        <div>≈</div>
+        <div>{rightSide}</div>
       </Label>
       <SwapButton />
     </Container>

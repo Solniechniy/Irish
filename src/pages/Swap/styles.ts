@@ -65,6 +65,8 @@ export const TokenTitle = styled.div`
   text-align: right;
   display: flex;
   align-items: center;
+  cursor: pointer;
+
 `;
 
 export const ArrowDown = styled(IconArrowDown)`
@@ -112,7 +114,9 @@ export const ExchangeLogo = styled(Exchange)`
   cursor: pointer;
 `;
 
-export const Label = styled.p`
+export const Label = styled.div`
+  display: flex;
+  justify-content: center;
   font-style: normal;
   font-weight: normal;
   font-size: 1.125rem;
@@ -120,4 +124,22 @@ export const Label = styled.p`
   text-align: center;
   color: ${({ theme }) => theme.globalBLack};
   margin: 24px 0;
+  white-space: nowrap;
+  & > div:first-child {
+    flex: 1 1 0;
+    display: flex;
+    justify-content: flex-end;
+    overflow: hidden;
+  }
+  & > div:nth-child(2) { 
+    flex: 0 1 0;
+    padding: 0 10px;
+  }
+
+  & > div:last-child { 
+    flex: 1 1 0;
+    display: flex;
+    justify-content: flex-start;
+    overflow: hidden;
+  }
 `;

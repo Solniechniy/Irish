@@ -4,7 +4,8 @@ import { ReactComponent as MobileLogo } from 'assets/images/mobile-irish.svg';
 
 import { isMobile } from 'utils/userAgent';
 import { StatusLink } from 'store';
-import Swap from 'component/Swap';
+import Swap from 'pages/Swap';
+import Pool from 'pages/Pool';
 import {
   Container,
   Header,
@@ -39,14 +40,14 @@ const Navigation = ({ currentTab, setCurrentTab }:INavigation) => (
 function CurrentTab({ currentTab }: { currentTab: StatusLink }) {
   switch (currentTab) {
     case StatusLink.Pool:
-      return <p>Pool</p>;
+      return <Pool />;
     default:
       return <Swap />;
   }
 }
 
 export default function Home() {
-  const [currentTab, setCurrentTab] = useState<StatusLink>(StatusLink.Swap);
+  const [currentTab, setCurrentTab] = useState<StatusLink>(StatusLink.Pool);
 
   return (
     <Container>
