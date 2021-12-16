@@ -1,4 +1,4 @@
-import React, {
+import {
   Dispatch, SetStateAction,
 } from 'react';
 import SpecialWallet from 'services/wallet';
@@ -8,6 +8,21 @@ import logoOutputToken from 'assets/images/white-near.svg';
 import rainbowLogo from 'assets/images/rainbow-bridge.svg';
 
 export enum StatusLink { 'Swap', 'Pool' }
+export interface IPool {
+  poolKind: string,
+  tokenAccountIds: string[],
+  amounts: string[],
+  totalFee: number,
+  sharesTotalSupply: string
+}
+
+export interface IToken {
+  version:string;
+  name:string;
+  symbol:string;
+  reference:string;
+  decimals:number;
+}
 
 export type StoreContextType = {
   wallet: SpecialWallet | null;
@@ -16,6 +31,10 @@ export type StoreContextType = {
   setLoading: Dispatch<SetStateAction<boolean>>;
   isAccountModalOpen: boolean;
   setAccountModalOpen: Dispatch<SetStateAction<boolean>>;
+  pools: IPool[];
+  setPools: Dispatch<SetStateAction<IPool[]>>;
+  tokens: {[key: string]: IToken};
+  setTokens: Dispatch<SetStateAction<{[key: string]: IToken}>>;
 }
 
 interface IIinformation {

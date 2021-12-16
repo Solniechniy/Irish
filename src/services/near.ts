@@ -13,4 +13,5 @@ export const near = new Near({
   ...config,
   headers: {},
 });
+
 export const wallet = new SpecialWallet(near, CONTRACT_ID);
