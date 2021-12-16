@@ -18,3 +18,5 @@ export const formatBalance = (value:string):string => {
   if (formattedValue.lte('0.00001')) return '>0.00001';
   return formattedValue.toFixed(5);
 };
+
+export const getUpperCase = (value:string) => value.toUpperCase();

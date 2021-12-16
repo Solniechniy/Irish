@@ -1,16 +1,15 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { ReactComponent as IrishLogo } from 'assets/images/irish-logo.svg';
+import { ReactComponent as MobileLogo } from 'assets/images/mobile-irish.svg';
 
-import { isMobile, isTablet } from 'utils/userAgent';
-import { StatusLink } from 'store/store';
+import { isMobile } from 'utils/userAgent';
+import { StatusLink } from 'store';
 import Swap from 'component/Swap';
 import {
   Container,
   Header,
-  MobileHeader,
-  UpperRow,
-  LowerRow,
-  LogoContainer,
+  LeftContainer,
+  RightContainer,
   NavBar,
   NavButton,
   Body,
@@ -52,35 +51,18 @@ export default function Home() {
   return (
     <Container>
 
-      {isMobile || isTablet
-        ? (
-          <MobileHeader>
-            <UpperRow>
-              <LogoContainer>
-                <IrishLogo />
-              </LogoContainer>
-              <ConnectionButton />
-            </UpperRow>
-            <LowerRow>
-              <Navigation
-                currentTab={currentTab}
-                setCurrentTab={setCurrentTab}
-              />
-            </LowerRow>
-          </MobileHeader>
-        )
-        : (
-          <Header>
-            <LogoContainer>
-              <IrishLogo />
-            </LogoContainer>
-            <Navigation
-              currentTab={currentTab}
-              setCurrentTab={setCurrentTab}
-            />
-            <ConnectionButton />
-          </Header>
-        )}
+      <Header>
+        <LeftContainer>
+          {isMobile ? <MobileLogo /> : <IrishLogo />}
+        </LeftContainer>
+        <Navigation
+          currentTab={currentTab}
+          setCurrentTab={setCurrentTab}
+        />
+        <RightContainer>
+          <ConnectionButton />
+        </RightContainer>
+      </Header>
 
       <Body>
         <CurrentTab currentTab={currentTab} />

@@ -19,17 +19,23 @@ const mediaWidthTemplates: {
 }, {}) as any;
 
 export interface ThemeColors {
+  layoutBlack: string;
   globalBlack: string;
   globalWhite: string;
   globalGrey: string;
-  backgroundCard: string;
+  globalLightGrey: string;
+  BgCardGrey: string;
+  orange: string;
 }
 
 export const colors: ThemeColors = {
-  globalBlack: '#131313',
+  layoutBlack: 'rgba(0, 0, 0, 0.4)',
+  globalBlack: '#000000',
   globalWhite: '#FFFFFF',
   globalGrey: '#666666',
-  backgroundCard: '#FFE4CC',
+  globalLightGrey: '#8991A3',
+  BgCardGrey: '#E7E9ED',
+  orange: '#FF7A00',
 };
 
 function theme(): DefaultTheme {

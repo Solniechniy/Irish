@@ -1,45 +1,49 @@
 import React from 'react';
 import styled from 'styled-components';
+import { isMobile } from 'utils/userAgent';
 
 export enum ButtonVariant {
   Primary,
   Secondary,
+  Tertiary,
 }
 
 export const ButtonPrimary = styled.button`
   max-height: 54px;
   outline: none;
   display: flex;
-  display: -webkit-box;
-  display: -webkit-flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   padding: 12.5px 15px;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 1rem;
-  line-height: 19px;
   border: 2px solid ${({ theme }) => theme.globalBlack};
-  background: ${({ theme }) => theme.globalBlack};
-  color: ${({ theme }) => theme.globalWhite};
-  border-radius: 12px;
+  border-radius: 8px;
+  background: none;
+
+  font-style: normal;
+  font-weight: bold;
+  font-size: 1.063rem;
+  line-height: 1rem;
+  color: ${({ theme }) => theme.globalBlack};
+  
   :hover {
     cursor: pointer;
-    background: ${({ theme }) => theme.globalGrey};
-    border: 2px solid ${({ theme }) => theme.globalGrey};
   }
   :active {
   }
   :disabled{
-    background: ${({ theme }) => theme.grayHover};
-    border: 1px solid ${({ theme }) => theme.grayHover};
   }
 `;
 
 export const ButtonSecondary = styled(ButtonPrimary)`
-  background: transparent;
-  color: ${({ theme }) => theme.globalBlack};
+  border: none;
+`;
+
+export const ButtonTertiary = styled(ButtonPrimary)`
+  border: none;
+  background: ${({ theme }) => theme.globalBlack};
+  color: ${({ theme }) => theme.globalWhite};
+  border-radius: ${isMobile ? '2px' : '8px'};
 `;
 
 export function Button({ variant }: { variant: ButtonVariant }) {
@@ -48,6 +52,8 @@ export function Button({ variant }: { variant: ButtonVariant }) {
       return <ButtonPrimary />;
     case ButtonVariant.Secondary:
       return <ButtonSecondary />;
+    case ButtonVariant.Tertiary:
+      return <ButtonTertiary />;
     default:
       return <ButtonPrimary />;
   }

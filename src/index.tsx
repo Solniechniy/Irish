@@ -2,10 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import theme from 'theme';
 import { ThemeProvider } from 'styled-components';
+import { StoreContextProvider } from 'store';
 
 import useFullHeightHook from 'hooks/useFullHeightHook';
 
 import Home from 'pages/Home';
+import Modals from 'component/Modals';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 
@@ -14,7 +16,11 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Home />
+      <StoreContextProvider>
+        <Modals>
+          <Home />
+        </Modals>
+      </StoreContextProvider>
     </ThemeProvider>
   );
 }
