@@ -26,6 +26,7 @@ export interface ThemeColors {
   globalLightGrey: string;
   BgCardGrey: string;
   orange: string;
+  exchangeBorder: string;
 }
 
 export const colors: ThemeColors = {
@@ -36,6 +37,7 @@ export const colors: ThemeColors = {
   globalLightGrey: '#8991A3',
   BgCardGrey: '#E7E9ED',
   orange: '#FF7A00',
+  exchangeBorder: '#D4D7DE',
 };
 
 function theme(): DefaultTheme {

@@ -18,7 +18,21 @@ export type StoreContextType = {
   setAccountModalOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-export const information = {
+interface IIinformation {
+  inputTokenBalance: string,
+  inputTokenLogo: string, //! fix
+  inputTokenName: string,
+  inputMinterName?: string,
+  inputMinterLogo?: string,
+
+  outputTokenBalance: string,
+  outputTokenLogo: string, //! fix
+  outputTokenName: string,
+  outputMinterName?: string,
+  outputMinterLogo?: string,
+}
+
+export const information: IIinformation = {
   inputTokenBalance: '0.562869',
   inputTokenLogo: logoInputToken, //! fix
   inputTokenName: 'LTC',

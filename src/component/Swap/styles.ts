@@ -12,14 +12,19 @@ export const Container = styled.div`
 
 export const ActionContainer = styled.div`
   background: ${({ theme }) => theme.BgCardGrey};
-
   border-radius: ${isMobile ? '2px' : '8px'};
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 10px 38px 27px 26px;
 `;
 
 export const Block = styled.div`
+  background: ${({ theme }) => theme.BgCardGrey};
+  border-radius: ${isMobile ? '2px' : '8px'};
   display: flex;
   flex-direction: column;
-  padding: 27px 38px 30px 26px;
+  padding: 10px 0px 0px 0px;
 `;
 
 export const WalletInformation = styled.div`
@@ -80,19 +85,32 @@ export const MinterName = styled.div`
   align-items: center;
 `;
 
-export const Input = styled.input`
-  width: 60%;
-  outline: none;
-  border: none;
-  background: none;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 2rem;
-  line-height: 2rem;
-  text-align: right;
+export const ExchangeContainer = styled.div`
+  align-self: center;
+  position: relative;
+  :after {
+    content: '';
+    position: absolute;
+    border: 2px solid ${({ theme }) => theme.exchangeBorder};
+    width: 264px;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 40px;
+  }
+  :before {
+    content: '';
+    position: absolute;
+    border: 2px solid ${({ theme }) => theme.exchangeBorder};
+    width: 264px;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 40px;
+  }
 `;
 
-export const IntermediateBlock = styled.div``;
+export const ExchangeLogo = styled(Exchange)`
+  cursor: pointer;
+`;
 
 export const Label = styled.p`
   font-style: normal;
@@ -101,4 +119,5 @@ export const Label = styled.p`
   line-height: 1.063rem;
   text-align: center;
   color: ${({ theme }) => theme.globalBLack};
+  margin: 24px 0;
 `;

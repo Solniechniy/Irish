@@ -9,7 +9,6 @@ export enum ButtonVariant {
 }
 
 export const ButtonPrimary = styled.button`
-  max-height: 54px;
   outline: none;
   display: flex;
   flex-direction: row;
@@ -44,6 +43,7 @@ export const ButtonTertiary = styled(ButtonPrimary)`
   background: ${({ theme }) => theme.globalBlack};
   color: ${({ theme }) => theme.globalWhite};
   border-radius: ${isMobile ? '2px' : '8px'};
+  padding: 22px;
 `;
 
 export function Button({ variant }: { variant: ButtonVariant }) {
