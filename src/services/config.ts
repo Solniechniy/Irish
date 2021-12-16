@@ -1,5 +1,5 @@
 export default function getConfig(
-  env: string | undefined = process.env.REACT_APP_NEAR_ENV,
+  env: string = process.env.REACT_APP_NEAR_ENV || 'testnet',
 ) {
   switch (env) {
     case 'development':
