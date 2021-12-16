@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { getUpperCase } from 'utils/index';
 import { information } from 'store';
-
 import { isMobile } from 'utils/userAgent';
+import CurrencyInputPanel from 'component/CurrencyInputPanel';
 import {
   Container,
   ActionContainer,
@@ -15,14 +15,18 @@ import {
   MinterName,
   MinterLogo,
   WalletInformation,
-  Input,
   LogoWallet,
-  IntermediateBlock,
+  ExchangeContainer,
+  ExchangeLogo,
   Label,
 } from './styles';
 import SwapButton from './SwapButton';
 
 export default function Swap() {
+  const [inputTokenValue, setInputTokenValue] = useState<string>('');
+  const [outputTokenValue, setOutputTokenValue] = useState<string>('');
+
+  const label = `${inputTokenValue || 1} ${getUpperCase(information.inputTokenName)} ≈ 4000 ${getUpperCase(information.outputTokenName)}`;
   return (
     <Container>
       <ActionContainer>
@@ -47,20 +51,49 @@ export default function Swap() {
                 {information.inputMinterName}
               </MinterName>
             </TokenContainer>
-            <Input
-              placeholder="0.0"
-              type="number"
+            <CurrencyInputPanel
+              value={inputTokenValue}
+              setValue={setInputTokenValue}
             />
           </InputContainer>
         </Block>
         {isMobile
           ? null
           : (
-            <IntermediateBlock />
+            <ExchangeContainer>
+              <ExchangeLogo />
+            </ExchangeContainer>
           )}
+        <Block>
+          <WalletInformation>
+            <LogoWallet />
+            {information.outputTokenBalance}
+          </WalletInformation>
+          <InputContainer>
+            <LogoContainer>
+              <img src={information.outputTokenLogo} alt="inputMinterLogo" />
+            </LogoContainer>
+            <TokenContainer>
+              <TokenTitle>
+                {getUpperCase(information.outputTokenName)}
+                <ArrowDown />
+              </TokenTitle>
+              <MinterName>
+                <MinterLogo>
+                  <img src={information.outputMinterLogo} alt="inputMinterLogo" />
+                </MinterLogo>
+                {information.outputMinterName}
+              </MinterName>
+            </TokenContainer>
+            <CurrencyInputPanel
+              value={outputTokenValue}
+              setValue={setOutputTokenValue}
+            />
+          </InputContainer>
+        </Block>
       </ActionContainer>
       <Label>
-        1 ETH ≈ 4923.333 NEAR
+        {label}
       </Label>
       <SwapButton />
     </Container>
