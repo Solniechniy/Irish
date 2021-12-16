@@ -21,11 +21,15 @@ const mediaWidthTemplates: {
 export interface ThemeColors {
   globalBlack: string;
   globalWhite: string;
+  globalGrey: string;
+  backgroundCard: string;
 }
 
 export const colors: ThemeColors = {
   globalBlack: '#131313',
   globalWhite: '#FFFFFF',
+  globalGrey: '#666666',
+  backgroundCard: '#FFE4CC',
 };
 
 function theme(): DefaultTheme {
@@ -34,14 +38,6 @@ function theme(): DefaultTheme {
 
     // media queries
     mediaWidth: mediaWidthTemplates,
-
-    fontSizes: {
-      xl: '4rem',
-      l: '2rem',
-      m: '1rem',
-      s: '0.9rem',
-      xs: '0.75rem',
-    },
 
     fontWeight: {
       light: 200,
