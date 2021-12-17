@@ -26,7 +26,3 @@ export const inputRegex = RegExp('^\\d*(?:\\\\[.])?\\d*$'); // match escaped "."
 export function escapeRegExp(string: string): string {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
 }
-
-export function toCameCase(str:string) {
-  return str.replace(/\W+(.)/g, (match, chr) => chr.toUpperCase());
-}

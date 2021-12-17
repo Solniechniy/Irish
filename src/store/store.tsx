@@ -43,7 +43,6 @@ export const StoreContextProvider = (
       const contract: any = createContract(nearWallet, config.contractId, ['get_pools']);
       const poolsResult = await contract.get_pools({ pool_id: 0, from_index: 0, limit: 100 });
       const tokenAddresses = poolsResult.flatMap((pool: any) => pool.token_account_ids);
-      //! ask about "_"
       setPools(poolsResult); // TODO: make pool formater which will change obj keys to camelCase
       const tokensMetadata: any[] = await Promise.all(
         tokenAddresses.map(async (address: string) => {
