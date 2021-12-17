@@ -10,8 +10,18 @@ import { getUpperCase } from 'utils';
 import CurrencyInputPanel from 'component/CurrencyInputPanel';
 import { ButtonTertiary } from 'component/Button';
 import {
-  Modal, Layout, ModalTitle, ModalBlock, ModalClose,
+  Modal, Layout, ModalBlock, ModalClose,
 } from './styles';
+
+const ModalTitle = styled.h2`
+  font-style: normal;
+  font-weight: 500;
+  font-size: 1.5rem;
+  line-height: 120%;
+  margin-block-start: 0;
+  margin-block-end: 0;
+  margin: 0 auto;
+`;
 
 const ModalBody = styled.div`
   margin: 24px;
@@ -98,7 +108,9 @@ const TokenTitle = styled.div`
   cursor: pointer;
 `;
 
-const TokensBlock = () => {
+const TokensBlock = (
+  { setSearchModalOpen }:any, // TODO: fix type
+) => {
   const [value, setValue] = useState<string>('');
 
   const setHalfAmount = () => {
@@ -127,7 +139,7 @@ const TokensBlock = () => {
           {/* TODO: fix logo */}
           <img src={logoInputToken} alt="inputMinterLogo" />
         </LogoContainer>
-        <TokenTitle>
+        <TokenTitle onClick={() => setSearchModalOpen(true)}>
           {/* TODO: fix title */}
           {getUpperCase('LTC')}
         </TokenTitle>
@@ -141,6 +153,8 @@ const TokensBlock = () => {
 };
 
 export default function LiquidityModal() {
+  const { setSearchModalOpen } = useStore();
+
   const { isLiquidityModalOpen, setLiquidityModalOpen } = useStore();
   return (
     <>
@@ -156,8 +170,12 @@ export default function LiquidityModal() {
             </ModalClose>
           </ModalBlock>
           <ModalBody>
-            <TokensBlock />
-            <TokensBlock />
+            <TokensBlock
+              setSearchModalOpen={setSearchModalOpen}
+            />
+            <TokensBlock
+              setSearchModalOpen={setSearchModalOpen}
+            />
             <ButtonTertiary
               onClick={() => console.log('DEPOSIT')}
             >

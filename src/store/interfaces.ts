@@ -34,6 +34,8 @@ export type StoreContextType = {
   setAccountModalOpen: Dispatch<SetStateAction<boolean>>;
   isLiquidityModalOpen: boolean;
   setLiquidityModalOpen: Dispatch<SetStateAction<boolean>>;
+  isSearchModalOpen: boolean;
+  setSearchModalOpen: Dispatch<SetStateAction<boolean>>;
   pools: IPool[];
   setPools: Dispatch<SetStateAction<IPool[]>>;
   tokens: {[key: string]: IToken};

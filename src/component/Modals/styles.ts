@@ -13,7 +13,7 @@ export const Layout = styled.div`
 `;
 
 export const Modal = styled.div`
-  min-width: 540px;
+  min-width: 400px;
   min-height: 170px;
   background-color: ${({ theme }) => theme.globalWhite};
   border-radius: 16px;
@@ -44,7 +44,6 @@ export const ModalTitle = styled.h2`
   line-height: 120%;
   margin-block-start: 0;
   margin-block-end: 0;
-  margin: 0 auto;
 `;
 
 export const ModalClose = styled.div`

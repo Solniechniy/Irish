@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { getUpperCase } from 'utils/index';
-import { information } from 'store';
-import { isMobile } from 'utils/userAgent';
 import CurrencyInputPanel from 'component/CurrencyInputPanel';
 
+import { getUpperCase } from 'utils/index';
+import { information, useStore } from 'store';
+import { isMobile } from 'utils/userAgent';
 import {
   Container,
   ActionContainer,
@@ -24,6 +24,7 @@ import {
 import SwapButton from './SwapButton';
 
 export default function Swap() {
+  const { setSearchModalOpen } = useStore();
   const [inputTokenValue, setInputTokenValue] = useState<string>('');
   const [outputTokenValue, setOutputTokenValue] = useState<string>('');
 
@@ -42,7 +43,7 @@ export default function Swap() {
               <img src={information.inputTokenLogo} alt="inputMinterLogo" />
             </LogoContainer>
             <TokenContainer>
-              <TokenTitle>
+              <TokenTitle onClick={() => setSearchModalOpen(true)}>
                 {getUpperCase(information.inputTokenName)}
                 <ArrowDown />
               </TokenTitle>
