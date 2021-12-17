@@ -134,7 +134,7 @@ export const StoreContextProvider = (
     } catch (e) {
       console.log(e);
     }
-    setPools({...pools, pools[id]: updatePool});
+    // setPools({...pools, pools[id]: updatePool});
   };
 
   return (

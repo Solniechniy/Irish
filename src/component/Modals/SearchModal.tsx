@@ -33,6 +33,7 @@ const SearchModalContainer = styled(Modal)`
 
 const SearchResults = styled(ModalBlock)`
   flex-direction: column;
+  justify-content: flex-start;
   overflow: scroll;
   flex: 5;
   margin-bottom:0;
@@ -45,15 +46,18 @@ const SearchRowContainer = styled.div`
   min-height: 50px;
   width: 100%;
   display: flex;
-  justify-content: space-between;
   align-items: center;
   cursor: pointer;
   margin-bottom: 1rem;
+  & > img {
+    width: 3rem;
+    height: 3rem;
+  }
 `;
 
 const SearchDescriptionBlock = styled.div`
   display: flex; 
-  flex-direction:column;
+  flex-direction: column;
   flex-grow: 2;
   margin: 0 16px;
 `;
@@ -130,8 +134,9 @@ export default function SearchModal() {
 
   useEffect(() => {
     const newTokens = Object.values(tokens);
+
     if (newTokens.length !== tokensArray.length) {
-      setTokensArray(tokensArray);
+      setTokensArray(newTokens);
     }
   }, [tokens, loading]);
 
