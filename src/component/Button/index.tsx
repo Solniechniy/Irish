@@ -26,11 +26,14 @@ export const ButtonPrimary = styled.button`
   color: ${({ theme }) => theme.globalBlack};
   
   :hover {
+    transition: all .3s ease;
     cursor: pointer;
-  }
-  :active {
-  }
-  :disabled{
+    border-color: ${({ theme }) => theme.hover};
+    color: ${({ theme }) => theme.globalWhite};
+    background: ${({ theme }) => theme.hover};
+    path {
+      fill: ${({ theme }) => theme.globalWhite};
+    }
   }
 `;
 
@@ -44,6 +47,8 @@ export const ButtonTertiary = styled(ButtonPrimary)`
   color: ${({ theme }) => theme.globalWhite};
   border-radius: ${isMobile ? '2px' : '8px'};
   padding: 22px;
+  :hover {
+  }
 `;
 
 export function Button({ variant }: { variant: ButtonVariant }) {

@@ -28,6 +28,7 @@ export interface ThemeColors {
   orange: string;
   exchangeBorder: string;
   greyPool: string;
+  hover: string;
 }
 
 export const colors: ThemeColors = {
@@ -40,6 +41,7 @@ export const colors: ThemeColors = {
   orange: '#FF7A00',
   exchangeBorder: '#D4D7DE',
   greyPool: '#5F6676',
+  hover: '#333333',
 };
 
 function theme(): DefaultTheme {
