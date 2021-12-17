@@ -1,11 +1,6 @@
 import styled from 'styled-components';
 
-export const Container = styled.div`
-  display: flex;
-  justify-content: center;
-`;
-
-export const Block = styled.div`
+export const CardBlock = styled.div`
   display: flex;
   flex-direction: column;
   background: ${({ theme }) => theme.BgCardGrey};
@@ -13,9 +8,13 @@ export const Block = styled.div`
   flex-direction: column;
   padding: 33px 24px 24px 24px;
   border-radius: 8px;
+  & > button {
+    border-radius: 2px;
+    padding: 0.906rem 1.875rem;
+  }
 `;
 
-export const TokenInformation = styled.div`
+export const TokenBock = styled.div`
   display: flex;
   flex-direction: column;
 `;
@@ -36,8 +35,8 @@ export const TokenTitle = styled.p`
   grid-area: 1 / 2 / 2 / 3;
   font-style: normal;
   font-weight: normal;
-  font-size: 20px;
-  line-height: 19px;
+  font-size: 1.25rem;
+  line-height: 1.25rem;
   display: flex;
   align-items: center;
   margin: 0;
@@ -47,8 +46,8 @@ export const TokenLabel = styled.p`
   grid-area: 2 / 2 / 3 / 3;
   font-style: normal;
   font-weight: normal;
-  font-size: 12px;
-  line-height: 11px;
+  font-size: .75rem;
+  line-height: .75rem;
   display: flex;
   align-items: center;
   margin: 0;
@@ -59,15 +58,15 @@ export const TokenValue = styled.p`
   grid-area: 1 / 3 / 3 / 4;
   font-style: normal;
   font-weight: normal;
-  font-size: 20px;
-  line-height: 19px;
+  font-size: 1.25rem;
+  line-height: 1.25rem;
   display: flex;
   align-items: center;
   justify-content: flex-end;
   margin: 0;
 `;
 
-export const Label = styled.div`
+export const CurrencyExchange = styled.div`
   display: flex;
   justify-content: center;
   font-style: normal;
@@ -75,6 +74,45 @@ export const Label = styled.div`
   font-size: 1rem;
   line-height: 1rem;
   white-space: nowrap;
-  margin-bottom: 28px;
+  margin-bottom: 1.25rem;
   color: ${({ theme }) => theme.greyPool};
+`;
+
+export const ProfitBlock = styled.div`
+  display: flex;
+  flex-direction: column;
+  & > div:last-child {
+    & > p:first-child {
+      font-weight: bold;
+    }
+    & > p:last-child {
+      font-weight: bold;
+    }
+  }
+`;
+
+export const ProfitRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`;
+
+export const ProfitLabel = styled.p`
+  font-style: normal;
+  font-weight: normal;
+  font-size: 1rem;
+  line-height: 1rem;
+  display: flex;
+  align-items: center;
+  color: ${({ theme }) => theme.greyPool};
+  margin: .75rem 0;
+`;
+
+export const ProfitValue = styled.p`
+  font-style: normal;
+  font-weight: normal;
+  font-size: 1rem;
+  line-height: 1rem;
+  color: ${({ theme }) => theme.globalBlack};
+  margin: .75rem 0;
 `;
