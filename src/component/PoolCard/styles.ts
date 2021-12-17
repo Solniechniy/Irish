@@ -29,6 +29,13 @@ export const TokenContainer = styled.div`
 export const TokenLogo = styled.div`
   grid-area: 1 / 1 / 3 / 2;
   margin-right: .5rem;
+  & > img {
+    width: 48px;
+    height: 48px;
+  }
+  :hover{
+    cursor: pointer;
+  }
 `;
 
 export const TokenTitle = styled.p`
@@ -40,6 +47,9 @@ export const TokenTitle = styled.p`
   display: flex;
   align-items: center;
   margin: 0;
+  :hover{
+    cursor: pointer;
+  }
 `;
 
 export const TokenLabel = styled.p`
@@ -51,7 +61,9 @@ export const TokenLabel = styled.p`
   display: flex;
   align-items: center;
   margin: 0;
-
+  :hover{
+    cursor: pointer;
+  }
 `;
 
 export const TokenValue = styled.p`

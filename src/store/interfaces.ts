@@ -52,6 +52,7 @@ export type StoreContextType = {
   outputToken: IToken | null,
   setOutputToken: Dispatch<SetStateAction<IToken | null>>,
   setPool: (pool: IPool) => void
+  contract: any;
 }
 
 interface IInformation {

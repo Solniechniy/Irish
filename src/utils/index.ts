@@ -28,10 +28,6 @@ export function escapeRegExp(string: string): string {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
 }
 
-export function toCameCase(str:string) {
-  return str.replace(/\W+(.)/g, (_, chr) => chr.toUpperCase());
-}
-
 export function formatPool(pool:any): IPool {
   return {
     poolKind: pool.pool_kind,
