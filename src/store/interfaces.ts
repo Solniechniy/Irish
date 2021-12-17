@@ -22,6 +22,7 @@ export interface IToken {
   symbol:string;
   reference:string;
   decimals:number;
+  contract: any;
 }
 
 export type StoreContextType = {
@@ -35,6 +36,8 @@ export type StoreContextType = {
   setPools: Dispatch<SetStateAction<IPool[]>>;
   tokens: {[key: string]: IToken};
   setTokens: Dispatch<SetStateAction<{[key: string]: IToken}>>;
+  balances: {[key: string]: string};
+  setBalances: Dispatch<SetStateAction<{[key: string]: string}>>;
 }
 
 interface IIinformation {
