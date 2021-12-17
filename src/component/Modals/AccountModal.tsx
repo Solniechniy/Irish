@@ -96,7 +96,6 @@ export default function AccountModal() {
             </ModalTitle>
             <ModalClose onClick={() => setAccountModalOpen(false)}>
               <CloseIcon />
-              Close
             </ModalClose>
           </ModalBlock>
           <ModalBlock>

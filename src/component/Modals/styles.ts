@@ -9,7 +9,7 @@ export const Layout = styled.div`
   justify-content: center;
   align-items: center;
   background-color: ${({ theme }) => theme.layoutBlack};
-  backdrop-filter: blur(16px);
+  backdrop-filter: blur(6px);
 `;
 
 export const Modal = styled.div`
@@ -44,20 +44,18 @@ export const ModalTitle = styled.h2`
   line-height: 120%;
   margin-block-start: 0;
   margin-block-end: 0;
+  margin: 0 auto;
 `;
 
 export const ModalClose = styled.div`
-cursor: pointer;
-display: flex;
-flex-direction: row;
-justify-content: space-between;
-align-items: center;
-font-style: normal;
-font-weight: bold;
-font-size: 1.0625;
-line-height: 22px;
-letter-spacing: -0.04em;
-&> svg {
-  margin-right: 14px;
-}
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 1.0625;
+  line-height: 22px;
+  letter-spacing: -0.04em;
 `;

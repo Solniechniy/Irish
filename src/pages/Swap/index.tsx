@@ -3,6 +3,7 @@ import { getUpperCase } from 'utils/index';
 import { information } from 'store';
 import { isMobile } from 'utils/userAgent';
 import CurrencyInputPanel from 'component/CurrencyInputPanel';
+
 import {
   Container,
   ActionContainer,

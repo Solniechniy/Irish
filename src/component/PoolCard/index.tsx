@@ -1,5 +1,6 @@
 import React from 'react';
 import { ButtonTertiary } from 'component/Button';
+import { useStore } from 'store';
 import {
   CardBlock,
   TokenBock,
@@ -44,6 +45,7 @@ const profitArr = [
 
 export default function PoolCard({ tokens }:any) {
   const currencyExchange = '1 USDT ≈ 0.9992999 USDC';
+  const { setLiquidityModalOpen } = useStore();
 
   return (
     <CardBlock>
@@ -76,7 +78,7 @@ export default function PoolCard({ tokens }:any) {
           </ProfitRow>
         ))}
       </ProfitBlock>
-      <ButtonTertiary>
+      <ButtonTertiary onClick={() => setLiquidityModalOpen(true)}>
         Deposit
       </ButtonTertiary>
     </CardBlock>
