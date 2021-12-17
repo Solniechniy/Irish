@@ -99,7 +99,9 @@ export default function AccountModal() {
             </ModalClose>
           </ModalBlock>
           <ModalBlock>
-            <WalletRow onClick={() => nearWallet.requestSignIn(config.contractId)}>
+            <WalletRow
+              onClick={() => (wallet ? null : nearWallet.requestSignIn(config.contractId))}
+            >
               <WalletTitle>
                 <NearLogo />
                 {wallet ? wallet.account().accountId : 'Near'}

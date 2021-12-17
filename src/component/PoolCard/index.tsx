@@ -64,6 +64,7 @@ export default function PoolCard({ pool }: {pool:IPool}) {
       value: '0.65%',
     },
   ];
+
   const currencyExchange = '1 USDT ≈ 0.9992999 USDC';
 
   return (
@@ -81,7 +82,7 @@ export default function PoolCard({ pool }: {pool:IPool}) {
               {token.name}
             </TokenLabel>
             <TokenValue>
-              {0}
+              0.0
             </TokenValue>
           </TokenContainer>
         ))}
