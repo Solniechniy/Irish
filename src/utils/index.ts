@@ -30,6 +30,7 @@ export function escapeRegExp(string: string): string {
 
 export function formatPool(pool:any): IPool {
   return {
+    id: 0,
     poolKind: pool.pool_kind,
     tokenAccountIds: pool.token_account_ids,
     amounts: pool.amounts,

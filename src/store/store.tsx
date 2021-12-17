@@ -5,7 +5,9 @@ import getConfig from 'services/config';
 import { wallet as nearWallet } from 'services/near';
 import SpecialWallet, { createContract } from 'services/wallet';
 import { formatPool } from 'utils';
-import { IPool, IToken, StoreContextType } from './interfaces';
+import {
+  contractMethods, IPool, IToken, StoreContextType,
+} from './interfaces';
 
 const config = getConfig();
 const INITIAL_POOL_ID = 0;
@@ -31,6 +33,7 @@ const initialState: StoreContextType = {
   outputToken: null,
   setOutputToken: () => {},
   setPool: () => {},
+  updatePool: () => {},
   contract: null,
 };
 
@@ -39,12 +42,13 @@ const StoreContextHOC = createContext<StoreContextType>(initialState);
 export const StoreContextProvider = (
   { children }:{ children: JSX.Element },
 ) => {
-  const contract: any = createContract(nearWallet, config.contractId, ['get_pools']);
+  const contract: any = createContract(nearWallet, config.contractId, contractMethods);
 
   const [wallet, setWallet] = useState<SpecialWallet| null>(initialState.wallet);
   const [loading, setLoading] = useState<boolean>(initialState.loading);
   const [tokens, setTokens] = useState<{[key: string]: IToken}>(initialState.tokens);
   const [pools, setPools] = useState<IPool[]>(initialState.pools);
+
   const [isAccountModalOpen, setAccountModalOpen] = useState<boolean>(
     initialState.isAccountModalOpen,
   );
@@ -115,6 +119,24 @@ export const StoreContextProvider = (
     }
   }, [pools.length]);
 
+  const updatePool = async (id:number) => {
+    try {
+      const accountId = nearWallet.getAccountId();
+
+      const poolFee = await contract.get_pool_fee({ pool_id: id }) ?? null;
+      const poolVolumes = await contract.get_pool_volumes({ pool_id: id }) ?? null;
+      const poolSharePrice = await contract.get_pool_share_price({ pool_id: id }) ?? null;
+      const poolShares = await contract.get_pool_shares(
+        { pool_id: id, account_id: accountId },
+      ) ?? null;
+      const poolTotalShares = await contract.get_pool_total_shares({ pool_id: id }) ?? null;
+      console.log(pools[id]);
+    } catch (e) {
+      console.log(e);
+    }
+    // setPools({...pools, pools[id]: updatePool});
+  };
+
   return (
     <StoreContextHOC.Provider value={{
       wallet,
@@ -138,6 +160,7 @@ export const StoreContextProvider = (
       outputToken,
       setOutputToken,
       setPool,
+      updatePool,
       contract,
     }}
     >

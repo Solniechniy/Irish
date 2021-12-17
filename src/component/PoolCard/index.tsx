@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ButtonTertiary } from 'component/Button';
 import { useStore, IPool, ITokenMetadata } from 'store';
 import {
@@ -17,9 +17,8 @@ import {
 } from './styles';
 
 export default function PoolCard({ pool }: {pool:IPool}) {
-  const currencyExchange = '1 USDT ≈ 0.9992999 USDC';
   const {
-    tokens, setLiquidityModalOpen, setSearchModalOpen,
+    tokens, setLiquidityModalOpen, setSearchModalOpen, updatePool,
   } = useStore();
   const [inputToken, outputToken] = pool.tokenAccountIds;
   const tokenInput = tokens[inputToken] ?? null;
@@ -28,11 +27,21 @@ export default function PoolCard({ pool }: {pool:IPool}) {
 
   const tokensArray = [tokenInput, tokenOutput].map(((v) => v.metadata));
   const onClick = () => setSearchModalOpen(true);
+  useEffect(() => {
+    const timer = setTimeout(async () => {
+      try {
+        updatePool(pool.id);
+      } catch (e) {
+        console.warn(e);
+      }
+    }, 1500);
+    return () => clearTimeout(timer);
+  });
 
   const profitArr = [
     {
       title: 'Fee',
-      value: '0.4%',
+      value: `${pool.poolFee ?? 0}%`,
     },
     {
       title: 'TVL',
@@ -44,17 +53,18 @@ export default function PoolCard({ pool }: {pool:IPool}) {
     },
     {
       title: 'Total Shares',
-      value: pool.sharesTotalSupply,
+      value: `$${pool.sharesTotalSupply ?? 0}`,
     },
     {
       title: 'Shares',
-      value: '0 (0%)',
+      value: `${pool.poolShares ?? 0} (0%)`,
     },
     {
       title: 'APY',
       value: '0.65%',
     },
   ];
+  const currencyExchange = '1 USDT ≈ 0.9992999 USDC';
 
   return (
     <CardBlock>
