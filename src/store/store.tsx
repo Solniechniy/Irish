@@ -66,7 +66,6 @@ export const StoreContextProvider = (
     const [inputTokenAddress, outputTokenAddress] = pool.tokenAccountIds;
     const inputTokenData = tokens[inputTokenAddress] ?? null;
     const outputTokenData = tokens[outputTokenAddress] ?? null;
-
     setInputToken(inputTokenData);
     setOutputToken(outputTokenData);
   };
@@ -92,12 +91,12 @@ export const StoreContextProvider = (
         const accountId = nearWallet.getAccountId();
         const balancesArray = await Promise.all(
           tokensMetadata.map(async (token) => {
-            const balance = token.contract.ft_balance_of({ account_id: accountId });
+            const balance = await token.contract.ft_balance_of({ account_id: accountId });
             return { contractId: token.contractId, balance };
           }),
         );
         const balancesMap = balancesArray.reduce((acc, curr) => (
-          { ...acc, [curr.contractId]: curr }
+          { ...acc, [curr.contractId]: curr.balance }
         ), {});
         setBalances(balancesMap);
       }

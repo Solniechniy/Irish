@@ -4,7 +4,7 @@ import { IPool } from 'store';
 const BASE = 10;
 const ACCOUNT_TRIM_LENGTH = 8;
 
-export const formatAmount = (amount: string, decimals?: number):string => (
+export const formatAmount = (amount: string, decimals?: number): string => (
   new Big(amount).div(new Big(BASE).pow(decimals ?? 0)).toFixed()
 );
 

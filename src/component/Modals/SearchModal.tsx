@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ReactComponent as CloseIcon } from 'assets/images/close.svg';
-import teatherLogo from 'assets/images/teather.svg';
 
 import styled from 'styled-components';
-import { useStore } from 'store';
+import { IToken, useStore } from 'store';
+import { formatAmount } from 'utils';
 import {
   Modal, Layout, ModalBlock, ModalTitle, ModalClose,
 } from './styles';
@@ -78,63 +78,62 @@ const SearchSubtitle = styled.p`
 `;
 
 const SearchRow = ({
-  logo, title, label, onClick,
+  tokensArray, balances, searchValue, loading,
 } : {
-  logo: string,
-  title: string,
-  label: string,
-  onClick: () => void
-}) => (
-  <SearchRowContainer onClick={onClick}>
-    <img src={logo} alt={title} />
-    <SearchDescriptionBlock>
-      <SearchTitle>
-        {title}
-      </SearchTitle>
-      <SearchSubtitle>{label}</SearchSubtitle>
-    </SearchDescriptionBlock>
-  </SearchRowContainer>
-);
+  tokensArray: IToken[],
+  balances: { [key: string]: string; },
+  searchValue: string,
+  loading: boolean
+}) => {
+  if (loading) return <h1>Loading</h1>;
 
-function renderSearchResults(
-  loading:boolean,
-  searchValue:string,
-  onClick: (id:number)=> void,
-) {
-  const token = {
-    id: 1,
-    title: 'USDT',
-    label: 'Teather',
-    logo: teatherLogo,
-  };
   return (
-    <div>
-      <SearchRow
-        logo={token.logo}
-        title={token.title}
-        label={token.label}
-        onClick={() => onClick(token.id)}
-      />
-    </div>
+    <> {tokensArray.map((token) => (
+      <SearchRowContainer onClick={() => console.log(token.contractId)}>
+        <img src={token.metadata.icon} alt={token.metadata.symbol} />
+        <SearchDescriptionBlock>
+          <SearchTitle>
+            {token.metadata.symbol}
+            {formatAmount(balances[token.contractId], token.metadata.decimals)}
+          </SearchTitle>
+          <SearchSubtitle>{token.metadata.name}</SearchSubtitle>
+        </SearchDescriptionBlock>
+      </SearchRowContainer>
+    ))}
+    </>
   );
-}
+};
 
 export default function SearchModal() {
   const {
-    isSearchModalOpen, setSearchModalOpen, loading,
+    isSearchModalOpen,
+    setSearchModalOpen,
+    loading,
+    tokens,
+    balances,
   } = useStore();
-
+  const initialTokens = Object.values(tokens);
+  const [tokensArray, setTokensArray] = useState<IToken[]>([]);
   const [searchValue, setSearchValue] = useState<string>('');
 
   const onChange = ({ target }: {target: HTMLInputElement}) => {
-    const newValue = target.value.trim();
+    const newValue = target.value.trim().toLowerCase();
     setSearchValue(newValue);
+    const newTokens = newValue !== ''
+      ? initialTokens.filter(
+        (el) => el.metadata.name.toLowerCase().includes(newValue)
+        || el.metadata.symbol.toLowerCase().includes(newValue),
+      )
+      : initialTokens;
+    setTokensArray(newTokens);
   };
 
-  const onRowClick = (id: number) => {
-    setSearchModalOpen(false);
-    console.log(id); // TODO: add token to swap
-  };
+  useEffect(() => {
+    const newTokens = Object.values(tokens);
+    if (newTokens.length !== tokensArray.length) {
+      setTokensArray(tokensArray);
+    }
+  }, [tokens, loading]);
 
   return (
     <>
@@ -157,7 +156,12 @@ export default function SearchModal() {
             />
           </ModalBlock>
           <SearchResults>
-            {renderSearchResults(loading, searchValue, onRowClick)}
+            <SearchRow
+              tokensArray={tokensArray}
+              balances={balances}
+              searchValue={searchValue}
+              loading={loading}
+            />
           </SearchResults>
         </SearchModalContainer>
       </Layout>
