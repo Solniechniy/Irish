@@ -7,6 +7,7 @@ import SpecialWallet, { createContract } from 'services/wallet';
 import { formatPool } from 'utils';
 import { IPool, IToken, StoreContextType } from './interfaces';
 
+const config = getConfig();
 const INITIAL_POOL_ID = 0;
 const initialState: StoreContextType = {
   wallet: null,
@@ -30,6 +31,7 @@ const initialState: StoreContextType = {
   outputToken: null,
   setOutputToken: () => {},
   setPool: () => {},
+  contract: null,
 };
 
 const StoreContextHOC = createContext<StoreContextType>(initialState);
@@ -37,6 +39,8 @@ const StoreContextHOC = createContext<StoreContextType>(initialState);
 export const StoreContextProvider = (
   { children }:{ children: JSX.Element },
 ) => {
+  const contract: any = createContract(nearWallet, config.contractId, ['get_pools']);
+
   const [wallet, setWallet] = useState<SpecialWallet| null>(initialState.wallet);
   const [loading, setLoading] = useState<boolean>(initialState.loading);
   const [tokens, setTokens] = useState<{[key: string]: IToken}>(initialState.tokens);
@@ -68,9 +72,6 @@ export const StoreContextProvider = (
       setLoading(true);
       const isSignedIn = nearWallet.isSignedIn();
 
-      const config = getConfig();
-
-      const contract: any = createContract(nearWallet, config.contractId, ['get_pools']);
       const poolsResult = await contract.get_pools({ from_index: 0, limit: 100 });
       const tokenAddresses = poolsResult.flatMap((pool: any) => pool.token_account_ids);
       const poolArray = poolsResult.map((pool:any) => formatPool(pool));
@@ -96,7 +97,6 @@ export const StoreContextProvider = (
         ), {});
         setBalances(balancesMap);
       }
-
       setTokens(tokensMetadata.reduce((acc, curr) => ({ ...acc, [curr.contractId]: curr }), {}));
       setPools(poolArray);
     } catch (e) {
@@ -139,6 +139,7 @@ export const StoreContextProvider = (
       outputToken,
       setOutputToken,
       setPool,
+      contract,
     }}
     >
       {children}

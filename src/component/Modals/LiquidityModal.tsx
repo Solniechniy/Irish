@@ -105,12 +105,9 @@ const TokenTitle = styled.div`
   text-align: right;
   display: flex;
   align-items: center;
-  cursor: pointer;
 `;
 
-const TokensBlock = (
-  { setSearchModalOpen }:any, // TODO: fix type
-) => {
+const TokensBlock = () => {
   const [value, setValue] = useState<string>('');
 
   const setHalfAmount = () => {
@@ -139,7 +136,7 @@ const TokensBlock = (
           {/* TODO: fix logo */}
           <img src={logoInputToken} alt="inputMinterLogo" />
         </LogoContainer>
-        <TokenTitle onClick={() => setSearchModalOpen(true)}>
+        <TokenTitle>
           {/* TODO: fix title */}
           {getUpperCase('LTC')}
         </TokenTitle>
@@ -153,8 +150,6 @@ const TokensBlock = (
 };
 
 export default function LiquidityModal() {
-  const { setSearchModalOpen } = useStore();
-
   const { isLiquidityModalOpen, setLiquidityModalOpen } = useStore();
   return (
     <>
@@ -170,14 +165,10 @@ export default function LiquidityModal() {
             </ModalClose>
           </ModalBlock>
           <ModalBody>
-            <TokensBlock
-              setSearchModalOpen={setSearchModalOpen}
-            />
-            <TokensBlock
-              setSearchModalOpen={setSearchModalOpen}
-            />
+            <TokensBlock />
+            <TokensBlock />
             <ButtonTertiary
-              onClick={() => console.log('DEPOSIT')}
+              onClick={() => console.log('Add Liquidity')}
             >
               Add Liquidity
             </ButtonTertiary>
