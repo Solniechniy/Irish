@@ -92,18 +92,21 @@ const SearchRow = ({
   if (loading) return <h1>Loading</h1>;
 
   return (
-    <> {tokensArray.map((token) => (
-      <SearchRowContainer onClick={() => console.log(token.contractId)}>
-        <img src={token.metadata.icon} alt={token.metadata.symbol} />
-        <SearchDescriptionBlock>
-          <SearchTitle>
-            {token.metadata.symbol}
-            {formatAmount(balances[token.contractId], token.metadata.decimals)}
-          </SearchTitle>
-          <SearchSubtitle>{token.metadata.name}</SearchSubtitle>
-        </SearchDescriptionBlock>
-      </SearchRowContainer>
-    ))}
+    <>
+      {tokensArray.map((token) => (
+        <SearchRowContainer onClick={() => console.log(token.contractId)}>
+          <img src={token.metadata.icon} alt={token.metadata.symbol} />
+          <SearchDescriptionBlock>
+            <SearchTitle>
+              {token.metadata.symbol}
+            </SearchTitle>
+            <SearchSubtitle>{token.metadata.name}</SearchSubtitle>
+          </SearchDescriptionBlock>
+          {formatAmount(balances[token.contractId], token.metadata.decimals)}
+          {' '}
+          {token.metadata.symbol}
+        </SearchRowContainer>
+      ))}
     </>
   );
 };
