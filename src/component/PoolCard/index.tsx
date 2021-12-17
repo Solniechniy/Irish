@@ -1,6 +1,9 @@
 import React from 'react';
 import { ButtonTertiary } from 'component/Button';
 import {
+  IPool, IToken, ITokenMetadata, useStore,
+} from 'store';
+import {
   CardBlock,
   TokenBock,
   TokenContainer,
@@ -42,25 +45,32 @@ const profitArr = [
   },
 ];
 
-export default function PoolCard({ tokens }:any) {
+export default function PoolCard({ pool }: {pool:IPool}) {
   const currencyExchange = '1 USDT ≈ 0.9992999 USDC';
+  const { tokens } = useStore();
 
+  const [inputToken, outputToken] = pool.tokenAccountIds;
+  const tokenInput = tokens[inputToken] ?? null;
+  const tokenOutput = tokens[outputToken] ?? null;
+  if (!tokenInput || !tokenOutput) return null;
+
+  const tokensArray = [tokenInput, tokenOutput].map(((v) => v.metadata));
   return (
     <CardBlock>
       <TokenBock>
-        {tokens.map((el:any) => (
-          <TokenContainer key={el.title}>
+        {tokensArray.map((token: ITokenMetadata) => (
+          <TokenContainer key={token.symbol}>
             <TokenLogo>
-              <img src={el.img} alt={el.title} />
+              <img src={token.icon} alt={token.name} />
             </TokenLogo>
             <TokenTitle>
-              {el.title}
+              {token.symbol}
             </TokenTitle>
             <TokenLabel>
-              {el.label}
+              {token.name}
             </TokenLabel>
             <TokenValue>
-              {el.value}
+              {0}
             </TokenValue>
           </TokenContainer>
         ))}

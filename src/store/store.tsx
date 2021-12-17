@@ -4,8 +4,10 @@ import React, {
 import getConfig from 'services/config';
 import { wallet as nearWallet } from 'services/near';
 import SpecialWallet, { createContract } from 'services/wallet';
+import { formatPool } from 'utils';
 import { IPool, IToken, StoreContextType } from './interfaces';
 
+const INITIAL_POOL_ID = 0;
 const initialState: StoreContextType = {
   wallet: null,
   setWallet: () => {},
@@ -19,6 +21,11 @@ const initialState: StoreContextType = {
   setTokens: () => {},
   balances: {},
   setBalances: () => {},
+  inputToken: null,
+  setInputToken: () => {},
+  outputToken: null,
+  setOutputToken: () => {},
+  setPool: () => {},
 };
 
 const StoreContextHOC = createContext<StoreContextType>(initialState);
@@ -34,6 +41,17 @@ export const StoreContextProvider = (
     initialState.isAccountModalOpen,
   );
   const [balances, setBalances] = useState<{[key:string]: string}>(initialState.balances);
+  const [inputToken, setInputToken] = useState<IToken | null>(initialState.inputToken);
+  const [outputToken, setOutputToken] = useState<IToken | null>(initialState.outputToken);
+
+  const setPool = (pool: IPool) => {
+    const [inputTokenAddress, outputTokenAddress] = pool.tokenAccountIds;
+    const inputTokenData = tokens[inputTokenAddress] ?? null;
+    const outputTokenData = tokens[outputTokenAddress] ?? null;
+
+    setInputToken(inputTokenData);
+    setOutputToken(outputTokenData);
+  };
 
   const initialLoading = async () => {
     try {
@@ -43,10 +61,10 @@ export const StoreContextProvider = (
       const config = getConfig();
 
       const contract: any = createContract(nearWallet, config.contractId, ['get_pools']);
-      const poolsResult = await contract.get_pools({ pool_id: 0, from_index: 0, limit: 100 });
+      const poolsResult = await contract.get_pools({ from_index: 0, limit: 100 });
       const tokenAddresses = poolsResult.flatMap((pool: any) => pool.token_account_ids);
-      //! ask about "_"
-      setPools(poolsResult); // TODO: make pool formater which will change obj keys to camelCase
+      const poolArray = poolsResult.map((pool:any) => formatPool(pool));
+
       const tokensMetadata: any[] = await Promise.all(
         tokenAddresses.map(async (address: string) => {
           const ftTokenContract:any = createContract(nearWallet, address, ['ft_metadata', 'ft_balance_of']);
@@ -68,7 +86,9 @@ export const StoreContextProvider = (
         ), {});
         setBalances(balancesMap);
       }
+
       setTokens(tokensMetadata.reduce((acc, curr) => ({ ...acc, [curr.contractId]: curr }), {}));
+      setPools(poolArray);
     } catch (e) {
       console.warn(e);
     } finally {
@@ -79,6 +99,12 @@ export const StoreContextProvider = (
   useEffect(() => {
     initialLoading();
   }, []);
+
+  useEffect(() => {
+    if (pools.length) {
+      setPool(pools[INITIAL_POOL_ID]);
+    }
+  }, [pools.length]);
 
   return (
     <StoreContextHOC.Provider value={{
@@ -94,6 +120,11 @@ export const StoreContextProvider = (
       setPools,
       balances,
       setBalances,
+      inputToken,
+      setInputToken,
+      outputToken,
+      setOutputToken,
+      setPool,
     }}
     >
       {children}

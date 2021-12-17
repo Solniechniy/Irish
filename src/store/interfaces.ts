@@ -9,20 +9,25 @@ import rainbowLogo from 'assets/images/rainbow-bridge.svg';
 
 export enum StatusLink { 'Swap', 'Pool' }
 export interface IPool {
-  poolKind: string,
-  tokenAccountIds: string[],
-  amounts: string[],
-  totalFee: number,
-  sharesTotalSupply: string
+  poolKind: string;
+  tokenAccountIds: string[];
+  amounts: string[];
+  totalFee: number;
+  sharesTotalSupply: string;
 }
 
 export interface IToken {
+  contract: any;
+  contractId: string;
+  metadata: ITokenMetadata;
+}
+export interface ITokenMetadata {
   version:string;
   name:string;
   symbol:string;
   reference:string;
   decimals:number;
-  contract: any;
+  icon: string;
 }
 
 export type StoreContextType = {
@@ -38,6 +43,11 @@ export type StoreContextType = {
   setTokens: Dispatch<SetStateAction<{[key: string]: IToken}>>;
   balances: {[key: string]: string};
   setBalances: Dispatch<SetStateAction<{[key: string]: string}>>;
+  inputToken: IToken | null,
+  setInputToken: Dispatch<SetStateAction<IToken | null>>,
+  outputToken: IToken | null,
+  setOutputToken: Dispatch<SetStateAction<IToken | null>>,
+  setPool: (pool: IPool) => void
 }
 
 interface IIinformation {

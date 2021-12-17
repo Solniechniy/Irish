@@ -1,4 +1,5 @@
 import Big from 'big.js';
+import { IPool } from 'store';
 
 const BASE = 10;
 const ACCOUNT_TRIM_LENGTH = 8;
@@ -29,4 +30,14 @@ export function escapeRegExp(string: string): string {
 
 export function toCameCase(str:string) {
   return str.replace(/\W+(.)/g, (match, chr) => chr.toUpperCase());
+}
+
+export function formatPool(pool:any): IPool {
+  return {
+    poolKind: pool.pool_kind,
+    tokenAccountIds: pool.token_account_ids,
+    amounts: pool.amounts,
+    totalFee: pool.total_fee,
+    sharesTotalSupply: pool.shares_total_supply,
+  };
 }
