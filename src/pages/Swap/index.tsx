@@ -177,9 +177,15 @@ export default function Swap() {
         />
       </ActionContainer>
       <Label>
-        <div>{leftSide}</div>
-        <div>≈</div>
-        <div>{rightSide}</div>
+        {loading
+          ? 'Loading...'
+          : (
+            <>
+              <div>{leftSide}</div>
+              <div>≈</div>
+              <div>{rightSide}</div>
+            </>
+          ) }
       </Label>
       <SwapButton />
     </Container>
