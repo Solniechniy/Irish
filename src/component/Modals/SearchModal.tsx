@@ -131,7 +131,7 @@ export default function SearchModal() {
   useEffect(() => {
     const newTokens = Object.values(tokens);
     if (newTokens.length !== tokensArray.length) {
-      setTokensArray(tokensArray);
+      setTokensArray(newTokens);
     }
   }, [tokens, loading]);
 

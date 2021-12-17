@@ -78,6 +78,10 @@ export const ArrowDown = styled(IconArrowDown)`
 
 export const MinterLogo = styled.div`
   margin-right: 4px;
+  &>img{
+    max-height: 1.5rem;
+    max-width: 1.5rem;
+  }
 `;
 
 export const MinterName = styled.div`

@@ -5,7 +5,7 @@ import SpecialWallet from 'services/wallet';
 
 import logoInputToken from 'assets/images/outputTokenLogo.svg';
 import logoOutputToken from 'assets/images/white-near.svg';
-import rainbowLogo from 'assets/images/rainbow-bridge.svg';
+import rainbowLogo from 'assets/images/rainbow-bridge.png';
 
 export enum StatusLink { 'Swap', 'Pool' }
 export interface IPool {

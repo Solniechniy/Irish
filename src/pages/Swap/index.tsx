@@ -5,6 +5,7 @@ import CurrencyInputPanel from 'component/CurrencyInputPanel';
 
 import { formatAmount, getUpperCase } from 'utils/index';
 import { information, IToken, useStore } from 'store';
+import { trustedTokens } from 'utils/constants';
 import {
   Container,
   ActionContainer,
@@ -45,7 +46,7 @@ const Input = (
     balance:string,
   },
 ) => {
-  console.log(balance, token?.metadata.decimals);
+  const trustedToken = trustedTokens[token?.contractId ?? ''];
   return (
     <Block>
       <WalletInformation>
@@ -55,19 +56,21 @@ const Input = (
       <InputContainer>
         <TokenWrapper onClick={openModal}>
           <LogoContainer>
-            <img src={token?.metadata?.icon ?? ''} alt="inputMinterLogo" />
+            <img src={token?.metadata?.icon ?? ''} alt={token?.metadata.symbol} />
           </LogoContainer>
           <TokenContainer>
             <TokenTitle>
               {getUpperCase(token?.metadata.symbol ?? '')}
               <ArrowDown />
             </TokenTitle>
-            {/* <MinterName>
+            {trustedToken && (
+            <MinterName>
               <MinterLogo>
-                <img src={information.inputMinterLogo} alt="inputMinterLogo" />
+                <img src={trustedToken.logo} alt={trustedToken.title} />
               </MinterLogo>
-              {information.inputMinterName}
-            </MinterName> */}
+              {trustedToken.title}
+            </MinterName>
+            )}
           </TokenContainer>
         </TokenWrapper>
         <CurrencyInputPanel
@@ -81,7 +84,12 @@ const Input = (
 
 export default function Swap() {
   const {
-    setSearchModalOpen, inputToken, outputToken, balances,
+    setSearchModalOpen,
+    inputToken,
+    setInputToken,
+    outputToken,
+    setOutputToken,
+    balances,
   } = useStore();
 
   const [inputTokenValue, setInputTokenValue] = useState<string>('');
@@ -96,6 +104,11 @@ export default function Swap() {
     },
     [],
   );
+  const changeTokens = () => {
+    const oldOutputToken = outputToken;
+    setOutputToken(inputToken);
+    setInputToken(oldOutputToken);
+  };
 
   return (
     <Container>
@@ -109,7 +122,7 @@ export default function Swap() {
           balance={balances[inputToken?.contractId ?? '']}
         />
         <ExchangeContainer>
-          <ExchangeLogo />
+          <ExchangeLogo onClick={changeTokens} />
         </ExchangeContainer>
         <Input
           openModal={openModal}
