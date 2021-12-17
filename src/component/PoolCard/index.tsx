@@ -1,8 +1,6 @@
 import React from 'react';
 import { ButtonTertiary } from 'component/Button';
-import {
-  IPool, IToken, ITokenMetadata, useStore,
-} from 'store';
+import { useStore, IPool, ITokenMetadata } from 'store';
 import {
   CardBlock,
   TokenBock,
@@ -53,6 +51,7 @@ export default function PoolCard({ pool }: {pool:IPool}) {
   const tokenInput = tokens[inputToken] ?? null;
   const tokenOutput = tokens[outputToken] ?? null;
   if (!tokenInput || !tokenOutput) return null;
+  const { setLiquidityModalOpen } = useStore();
 
   const tokensArray = [tokenInput, tokenOutput].map(((v) => v.metadata));
   return (
@@ -86,7 +85,7 @@ export default function PoolCard({ pool }: {pool:IPool}) {
           </ProfitRow>
         ))}
       </ProfitBlock>
-      <ButtonTertiary>
+      <ButtonTertiary onClick={() => setLiquidityModalOpen(true)}>
         Deposit
       </ButtonTertiary>
     </CardBlock>

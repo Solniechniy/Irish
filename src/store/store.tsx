@@ -17,6 +17,10 @@ const initialState: StoreContextType = {
   setLoading: () => {},
   isAccountModalOpen: false,
   setAccountModalOpen: () => {},
+  isLiquidityModalOpen: false,
+  setLiquidityModalOpen: () => {},
+  isSearchModalOpen: false,
+  setSearchModalOpen: () => {},
   tokens: {},
   setTokens: () => {},
   balances: {},
@@ -39,6 +43,12 @@ export const StoreContextProvider = (
   const [pools, setPools] = useState<IPool[]>(initialState.pools);
   const [isAccountModalOpen, setAccountModalOpen] = useState<boolean>(
     initialState.isAccountModalOpen,
+  );
+  const [isLiquidityModalOpen, setLiquidityModalOpen] = useState<boolean>(
+    initialState.isLiquidityModalOpen,
+  );
+  const [isSearchModalOpen, setSearchModalOpen] = useState<boolean>(
+    initialState.isSearchModalOpen,
   );
   const [balances, setBalances] = useState<{[key:string]: string}>(initialState.balances);
   const [inputToken, setInputToken] = useState<IToken | null>(initialState.inputToken);
@@ -114,6 +124,10 @@ export const StoreContextProvider = (
       setLoading,
       isAccountModalOpen,
       setAccountModalOpen,
+      isLiquidityModalOpen,
+      setLiquidityModalOpen,
+      isSearchModalOpen,
+      setSearchModalOpen,
       tokens,
       setTokens,
       pools,

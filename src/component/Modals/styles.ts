@@ -9,11 +9,11 @@ export const Layout = styled.div`
   justify-content: center;
   align-items: center;
   background-color: ${({ theme }) => theme.layoutBlack};
-  backdrop-filter: blur(16px);
+  backdrop-filter: blur(6px);
 `;
 
 export const Modal = styled.div`
-  min-width: 540px;
+  min-width: 400px;
   min-height: 170px;
   background-color: ${({ theme }) => theme.globalWhite};
   border-radius: 16px;
@@ -47,17 +47,14 @@ export const ModalTitle = styled.h2`
 `;
 
 export const ModalClose = styled.div`
-cursor: pointer;
-display: flex;
-flex-direction: row;
-justify-content: space-between;
-align-items: center;
-font-style: normal;
-font-weight: bold;
-font-size: 1.0625;
-line-height: 22px;
-letter-spacing: -0.04em;
-&> svg {
-  margin-right: 14px;
-}
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 1.0625;
+  line-height: 22px;
+  letter-spacing: -0.04em;
 `;

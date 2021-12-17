@@ -29,7 +29,7 @@ export function escapeRegExp(string: string): string {
 }
 
 export function toCameCase(str:string) {
-  return str.replace(/\W+(.)/g, (match, chr) => chr.toUpperCase());
+  return str.replace(/\W+(.)/g, (_, chr) => chr.toUpperCase());
 }
 
 export function formatPool(pool:any): IPool {
