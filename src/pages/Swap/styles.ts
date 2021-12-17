@@ -51,10 +51,15 @@ export const InputContainer = styled.div`
 
 export const LogoContainer = styled.div`
   margin-right: 1rem;
+  >img{
+    height: 3rem;
+    width: 3rem;
+  }
 `;
 
 export const TokenContainer = styled.div`
   flex: 1;
+
 `;
 
 export const TokenTitle = styled.div`
@@ -65,8 +70,6 @@ export const TokenTitle = styled.div`
   text-align: right;
   display: flex;
   align-items: center;
-  cursor: pointer;
-
 `;
 
 export const ArrowDown = styled(IconArrowDown)`
@@ -142,4 +145,10 @@ export const Label = styled.div`
     justify-content: flex-start;
     overflow: hidden;
   }
+`;
+
+export const TokenWrapper = styled.div`
+  display:flex;
+  flex-direction: row;
+  cursor: pointer;
 `;

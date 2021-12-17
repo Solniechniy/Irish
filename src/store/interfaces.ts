@@ -54,7 +54,7 @@ export type StoreContextType = {
   setPool: (pool: IPool) => void
 }
 
-interface IIinformation {
+interface IInformation {
   inputTokenBalance: string,
   inputTokenLogo: string, //! fix
   inputTokenName: string,
@@ -68,7 +68,7 @@ interface IIinformation {
   outputMinterLogo?: string,
 }
 
-export const information: IIinformation = {
+export const information: IInformation = {
   inputTokenBalance: '0.562869',
   inputTokenLogo: logoInputToken, //! fix
   inputTokenName: 'LTC',

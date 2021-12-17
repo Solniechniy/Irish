@@ -54,6 +54,7 @@ export default function PoolCard({ pool }: {pool:IPool}) {
   const { setLiquidityModalOpen } = useStore();
 
   const tokensArray = [tokenInput, tokenOutput].map(((v) => v.metadata));
+
   return (
     <CardBlock>
       <TokenBock>

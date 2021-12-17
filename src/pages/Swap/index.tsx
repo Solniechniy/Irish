@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, {
+  Dispatch, SetStateAction, useCallback, useState,
+} from 'react';
 import CurrencyInputPanel from 'component/CurrencyInputPanel';
 
-import { getUpperCase } from 'utils/index';
-import { information, useStore } from 'store';
-import { isMobile } from 'utils/userAgent';
+import { formatAmount, getUpperCase } from 'utils/index';
+import { information, IToken, useStore } from 'store';
 import {
   Container,
   ActionContainer,
@@ -20,80 +21,104 @@ import {
   ExchangeContainer,
   ExchangeLogo,
   Label,
+  TokenWrapper,
 } from './styles';
 import SwapButton from './SwapButton';
 
+export enum TokenType { 'Input', 'Output'}
+
+const Input = (
+  {
+    openModal,
+    token,
+    tokenType,
+    value,
+    setValue,
+    balance,
+  }:
+  {
+    openModal: () => void,
+    token: IToken | null,
+    tokenType: TokenType,
+    value: string,
+    setValue: Dispatch<SetStateAction<string>>,
+    balance:string,
+  },
+) => {
+  console.log(balance, token?.metadata.decimals);
+  return (
+    <Block>
+      <WalletInformation>
+        <LogoWallet />
+        {formatAmount(balance ?? 0, token?.metadata.decimals)}
+      </WalletInformation>
+      <InputContainer>
+        <TokenWrapper onClick={openModal}>
+          <LogoContainer>
+            <img src={token?.metadata?.icon ?? ''} alt="inputMinterLogo" />
+          </LogoContainer>
+          <TokenContainer>
+            <TokenTitle>
+              {getUpperCase(token?.metadata.symbol ?? '')}
+              <ArrowDown />
+            </TokenTitle>
+            {/* <MinterName>
+              <MinterLogo>
+                <img src={information.inputMinterLogo} alt="inputMinterLogo" />
+              </MinterLogo>
+              {information.inputMinterName}
+            </MinterName> */}
+          </TokenContainer>
+        </TokenWrapper>
+        <CurrencyInputPanel
+          value={value}
+          setValue={setValue}
+        />
+      </InputContainer>
+    </Block>
+  );
+};
+
 export default function Swap() {
-  const { setSearchModalOpen } = useStore();
+  const {
+    setSearchModalOpen, inputToken, outputToken, balances,
+  } = useStore();
+
   const [inputTokenValue, setInputTokenValue] = useState<string>('');
   const [outputTokenValue, setOutputTokenValue] = useState<string>('');
 
   const leftSide = `${inputTokenValue || 1} ${getUpperCase(information.inputTokenName)}`;
   const rightSide = `${outputTokenValue || 100} ${getUpperCase(information.outputTokenName)}`;
+
+  const openModal = useCallback(
+    () => {
+      setSearchModalOpen(true);
+    },
+    [],
+  );
+
   return (
     <Container>
       <ActionContainer>
-        <Block>
-          <WalletInformation>
-            <LogoWallet />
-            {information.inputTokenBalance}
-          </WalletInformation>
-          <InputContainer>
-            <LogoContainer>
-              <img src={information.inputTokenLogo} alt="inputMinterLogo" />
-            </LogoContainer>
-            <TokenContainer>
-              <TokenTitle onClick={() => setSearchModalOpen(true)}>
-                {getUpperCase(information.inputTokenName)}
-                <ArrowDown />
-              </TokenTitle>
-              <MinterName>
-                <MinterLogo>
-                  <img src={information.inputMinterLogo} alt="inputMinterLogo" />
-                </MinterLogo>
-                {information.inputMinterName}
-              </MinterName>
-            </TokenContainer>
-            <CurrencyInputPanel
-              value={inputTokenValue}
-              setValue={setInputTokenValue}
-            />
-          </InputContainer>
-        </Block>
-        {isMobile
-          ? null
-          : (
-            <ExchangeContainer>
-              <ExchangeLogo />
-            </ExchangeContainer>
-          )}
-        <Block>
-          <WalletInformation>
-            <LogoWallet />
-            {information.outputTokenBalance}
-          </WalletInformation>
-          <InputContainer>
-            <LogoContainer>
-              <img src={information.outputTokenLogo} alt="inputMinterLogo" />
-            </LogoContainer>
-            <TokenContainer>
-              <TokenTitle>
-                {getUpperCase(information.outputTokenName)}
-                <ArrowDown />
-              </TokenTitle>
-              <MinterName>
-                <MinterLogo>
-                  <img src={information.outputMinterLogo} alt="inputMinterLogo" />
-                </MinterLogo>
-                {information.outputMinterName}
-              </MinterName>
-            </TokenContainer>
-            <CurrencyInputPanel
-              value={outputTokenValue}
-              setValue={setOutputTokenValue}
-            />
-          </InputContainer>
-        </Block>
+        <Input
+          openModal={openModal}
+          token={inputToken}
+          tokenType={TokenType.Input}
+          value={inputTokenValue}
+          setValue={setInputTokenValue}
+          balance={balances[inputToken?.contractId ?? '']}
+        />
+        <ExchangeContainer>
+          <ExchangeLogo />
+        </ExchangeContainer>
+        <Input
+          openModal={openModal}
+          token={outputToken}
+          tokenType={TokenType.Output}
+          value={outputTokenValue}
+          setValue={setOutputTokenValue}
+          balance={balances[outputToken?.contractId ?? '']}
+        />
       </ActionContainer>
       <Label>
         <div>{leftSide}</div>
