@@ -94,7 +94,10 @@ const SearchRow = ({
   return (
     <>
       {tokensArray.map((token) => (
-        <SearchRowContainer onClick={() => console.log(token.contractId)}>
+        <SearchRowContainer
+          key={token.metadata.symbol}
+          onClick={() => console.log(token.contractId)}
+        >
           <img src={token.metadata.icon} alt={token.metadata.symbol} />
           <SearchDescriptionBlock>
             <SearchTitle>

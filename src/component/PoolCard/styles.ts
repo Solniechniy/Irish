@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const CardBlock = styled.div`
+  max-width: 360px;
   display: flex;
   flex-direction: column;
   background: ${({ theme }) => theme.BgCardGrey};
@@ -21,12 +22,15 @@ export const TokenBock = styled.div`
 
 export const TokenContainer = styled.div`
   display: grid;
-  grid-template-columns: 0.5fr 1fr 3.5fr;
+  grid-template-columns: 0.5fr 1fr 1fr;
   grid-template-rows: repeat(2, 1fr);
   margin-bottom: 1.75rem;
 `;
 
 export const TokenLogo = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
   grid-area: 1 / 1 / 3 / 2;
   margin-right: .5rem;
   & > img {

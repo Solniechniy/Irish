@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
+import Big from 'big.js';
 import styled from 'styled-components';
-
-import logoInputToken from 'assets/images/outputTokenLogo.svg';
+import CurrencyInputPanel from 'component/CurrencyInputPanel';
 
 import { ReactComponent as CloseIcon } from 'assets/images/close.svg';
 import { ReactComponent as Wallet } from 'assets/images/wallet.svg';
-import { useStore } from 'store';
-import { getUpperCase } from 'utils';
-import CurrencyInputPanel from 'component/CurrencyInputPanel';
+import { IToken, useStore } from 'store';
+import { formatAmount, getUpperCase } from 'utils';
 import { ButtonTertiary } from 'component/Button';
 import {
   Modal, Layout, ModalBlock, ModalClose,
@@ -94,6 +93,10 @@ const InputContainer = styled.div`
 
 const LogoContainer = styled.div`
   margin-right: 1rem;
+  & > img {
+    width: 3rem;
+    height: 3rem;
+  }
 `;
 
 const TokenTitle = styled.div`
@@ -106,15 +109,38 @@ const TokenTitle = styled.div`
   display: flex;
   align-items: center;
 `;
+export enum TokenType { 'Input', 'Output'}
 
-const TokensBlock = () => {
-  const [value, setValue] = useState<string>('');
-
+const TokensBlock = (
+  {
+    token,
+    tokenType,
+    value,
+    setValue,
+    balance,
+    loading,
+  }:
+  {
+    token: IToken | null,
+    tokenType: TokenType,
+    value: string,
+    setValue: Dispatch<SetStateAction<string>>,
+    balance:string,
+    loading: boolean,
+  },
+) => {
   const setHalfAmount = () => {
-    console.log('HALF');
+    if (!balance) return;
+
+    const currentBalance = new Big(balance ?? 0);
+    const newBalance = currentBalance.div(2);
+    setValue(formatAmount(newBalance.toString(), token?.metadata.decimals));
   };
+
   const setMaxAmount = () => {
-    console.log('MAX');
+    if (!balance) return;
+    const newBalance = formatAmount(balance ?? 0, token?.metadata.decimals);
+    setValue(newBalance);
   };
 
   return (
@@ -122,7 +148,7 @@ const TokensBlock = () => {
       <InputLabel>
         <WalletInformation>
           <LogoWallet />
-          0.12341234
+          {formatAmount(balance ?? 0, token?.metadata.decimals)}
         </WalletInformation>
         <ButtonHalfWallet onClick={setHalfAmount}>
           <span>HALF</span>
@@ -133,12 +159,10 @@ const TokensBlock = () => {
       </InputLabel>
       <InputContainer>
         <LogoContainer>
-          {/* TODO: fix logo */}
-          <img src={logoInputToken} alt="inputMinterLogo" />
+          <img src={token?.metadata?.icon ?? ''} alt={token?.metadata.symbol} />
         </LogoContainer>
         <TokenTitle>
-          {/* TODO: fix title */}
-          {getUpperCase('LTC')}
+          {getUpperCase(token?.metadata.symbol ?? '')}
         </TokenTitle>
         <CurrencyInputPanel
           value={value}
@@ -150,7 +174,19 @@ const TokensBlock = () => {
 };
 
 export default function LiquidityModal() {
-  const { isLiquidityModalOpen, setLiquidityModalOpen } = useStore();
+  const {
+    isLiquidityModalOpen,
+    setLiquidityModalOpen,
+    inputToken,
+    setInputToken,
+    outputToken,
+    setOutputToken,
+    balances,
+    loading,
+  } = useStore();
+
+  const [inputTokenValue, setInputTokenValue] = useState<string>('');
+  const [outputTokenValue, setOutputTokenValue] = useState<string>('');
   return (
     <>
       {isLiquidityModalOpen && (
@@ -165,8 +201,22 @@ export default function LiquidityModal() {
             </ModalClose>
           </ModalBlock>
           <ModalBody>
-            <TokensBlock />
-            <TokensBlock />
+            <TokensBlock
+              token={inputToken}
+              tokenType={TokenType.Input}
+              value={inputTokenValue}
+              setValue={setInputTokenValue}
+              balance={balances[inputToken?.contractId ?? '']}
+              loading={loading}
+            />
+            <TokensBlock
+              token={outputToken}
+              tokenType={TokenType.Output}
+              value={outputTokenValue}
+              setValue={setOutputTokenValue}
+              balance={balances[outputToken?.contractId ?? '']}
+              loading={loading}
+            />
             <ButtonTertiary
               onClick={() => console.log('Add Liquidity')}
             >

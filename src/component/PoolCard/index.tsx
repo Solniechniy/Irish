@@ -38,7 +38,7 @@ export default function PoolCard({ pool }: {pool:IPool}) {
     return () => clearTimeout(timer);
   });
 
-  const profitArr = [
+  const profit = [
     {
       title: 'Fee',
       value: `${pool.poolFee ?? 0}%`,
@@ -64,6 +64,7 @@ export default function PoolCard({ pool }: {pool:IPool}) {
       value: '0.65%',
     },
   ];
+
   const currencyExchange = '1 USDT ≈ 0.9992999 USDC';
 
   return (
@@ -81,7 +82,7 @@ export default function PoolCard({ pool }: {pool:IPool}) {
               {token.name}
             </TokenLabel>
             <TokenValue>
-              {0}
+              834.17K
             </TokenValue>
           </TokenContainer>
         ))}
@@ -90,7 +91,7 @@ export default function PoolCard({ pool }: {pool:IPool}) {
         {currencyExchange}
       </CurrencyExchange>
       <ProfitBlock>
-        {profitArr.map((el) => (
+        {profit.map((el) => (
           <ProfitRow key={el.title}>
             <ProfitLabel>{el.title}</ProfitLabel>
             <ProfitValue>{el.value}</ProfitValue>
