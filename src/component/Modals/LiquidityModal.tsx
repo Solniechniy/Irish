@@ -119,6 +119,7 @@ const TokensBlock = (
     setValue,
     balance,
     loading,
+    maxAmount,
   }:
   {
     token: IToken | null,
@@ -127,19 +128,18 @@ const TokensBlock = (
     setValue: Dispatch<SetStateAction<string>>,
     balance:string,
     loading: boolean,
+    maxAmount: Big
   },
 ) => {
   const setHalfAmount = () => {
     if (!balance) return;
-
-    const currentBalance = new Big(balance ?? 0);
-    const newBalance = currentBalance.div(2);
+    const newBalance = maxAmount.div(2);
     setValue(formatAmount(newBalance.toString(), token?.metadata.decimals));
   };
 
   const setMaxAmount = () => {
     if (!balance) return;
-    const newBalance = formatAmount(balance ?? 0, token?.metadata.decimals);
+    const newBalance = formatAmount(maxAmount.toFixed() ?? 0, token?.metadata.decimals);
     setValue(newBalance);
   };
 
@@ -148,7 +148,7 @@ const TokensBlock = (
       <InputLabel>
         <WalletInformation>
           <LogoWallet />
-          {formatAmount(balance ?? 0, token?.metadata.decimals)}
+          {new Big(formatAmount(balance ?? 0, token?.metadata.decimals)).toFixed(3)}
         </WalletInformation>
         <ButtonHalfWallet onClick={setHalfAmount}>
           <span>HALF</span>
@@ -186,7 +186,10 @@ export default function LiquidityModal() {
   } = useStore();
 
   const [inputTokenValue, setInputTokenValue] = useState<string>('');
-  const [outputTokenValue, setOutputTokenValue] = useState<string>('');
+
+  const firstBalance = new Big(balances[inputToken?.contractId ?? ''] ?? '1');
+  const secondBalance = new Big(balances[outputToken?.contractId ?? ''] ?? '1');
+
   return (
     <>
       {isLiquidityModalOpen && (
@@ -208,14 +211,16 @@ export default function LiquidityModal() {
               setValue={setInputTokenValue}
               balance={balances[inputToken?.contractId ?? '']}
               loading={loading}
+              maxAmount={firstBalance.lt(secondBalance) ? firstBalance : secondBalance}
             />
             <TokensBlock
               token={outputToken}
               tokenType={TokenType.Output}
-              value={outputTokenValue}
-              setValue={setOutputTokenValue}
+              value={inputTokenValue}
+              setValue={setInputTokenValue}
               balance={balances[outputToken?.contractId ?? '']}
               loading={loading}
+              maxAmount={firstBalance.lt(secondBalance) ? firstBalance : secondBalance}
             />
             <ButtonTertiary
               onClick={() => console.log('Add Liquidity')}
