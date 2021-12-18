@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const CardBlock = styled.div`
-  max-width: 360px;
+  width: 360px;
   display: flex;
   flex-direction: column;
   background: ${({ theme }) => theme.BgCardGrey};
@@ -9,6 +9,7 @@ export const CardBlock = styled.div`
   flex-direction: column;
   padding: 33px 24px 24px 24px;
   border-radius: 8px;
+  margin: 0 8px;
   & > button {
     border-radius: 2px;
     padding: 0.906rem 1.875rem;
