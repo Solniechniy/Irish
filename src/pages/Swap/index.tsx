@@ -2,6 +2,8 @@ import React, {
   Dispatch, SetStateAction, useCallback, useState,
 } from 'react';
 import CurrencyInputPanel from 'component/CurrencyInputPanel';
+import { ButtonTertiary } from 'component/Button';
+import { wallet } from 'services/near';
 
 import { formatAmount, getUpperCase } from 'utils/index';
 import { information, IToken, useStore } from 'store';
@@ -23,8 +25,8 @@ import {
   ExchangeLogo,
   Label,
   TokenWrapper,
+  Wallet,
 } from './styles';
-import SwapButton from './SwapButton';
 
 export enum TokenType { 'Input', 'Output'}
 
@@ -109,6 +111,12 @@ export default function Swap() {
     setOutputToken(inputToken);
     setInputToken(oldOutputToken);
   };
+  const isConnected = wallet.isSignedIn();
+  const { setAccountModalOpen } = useStore();
+
+  const title = isConnected
+    ? 'Swap'
+    : 'Connect wallet';
 
   return (
     <Container>
@@ -138,7 +146,14 @@ export default function Swap() {
         <div>≈</div>
         <div>{rightSide}</div>
       </Label>
-      <SwapButton />
+      {isConnected
+        ? <ButtonTertiary>{title}</ButtonTertiary>
+        : (
+          <ButtonTertiary onClick={() => setAccountModalOpen(true)}>
+            <Wallet />
+            {title}
+          </ButtonTertiary>
+        )}
     </Container>
   );
 }

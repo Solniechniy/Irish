@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { isMobile } from 'utils/userAgent';
-import { ReactComponent as Wallet } from 'assets/images/wallet.svg';
+import { ReactComponent as WalletImage } from 'assets/images/wallet.svg';
 import { ReactComponent as IconArrowDown } from 'assets/images/icon-arrow-down.svg';
 import { ReactComponent as Exchange } from 'assets/images/exchange.svg';
 
@@ -39,7 +39,7 @@ export const WalletInformation = styled.div`
   align-items: center;
 `;
 
-export const LogoWallet = styled(Wallet)`
+export const LogoWallet = styled(WalletImage)`
   margin-right: 0.438rem;
 `;
 
@@ -155,4 +155,11 @@ export const TokenWrapper = styled.div`
   display:flex;
   flex-direction: row;
   cursor: pointer;
+`;
+
+export const Wallet = styled(LogoWallet)`
+  margin-right: 0.625rem;
+  path {
+    fill: ${({ theme }) => theme.globalWhite};
+  }
 `;
