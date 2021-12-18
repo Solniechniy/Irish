@@ -1,6 +1,7 @@
 import rainbowLogo from 'assets/images/rainbow-bridge.png';
 import allBridgeLogo from 'assets/images/allbridge.png';
 
+export const BASE = 10;
 export interface ITrustedToken {
   logo: string;
   title: string;

@@ -119,7 +119,7 @@ export const StoreContextProvider = (
     }
   }, [pools.length]);
 
-  const updatePool = async (id:number) => {
+  const updatePool = async (id: number) => {
     try {
       const accountId = nearWallet.getAccountId();
 
@@ -130,11 +130,15 @@ export const StoreContextProvider = (
         { pool_id: id, account_id: accountId },
       ) ?? null;
       const poolTotalShares = await contract.get_pool_total_shares({ pool_id: id }) ?? null;
-      console.log(pools[id]);
+      const newPoolsArray = [...pools];
+      const index = pools.findIndex((el) => el.id === id);
+      newPoolsArray[index] = {
+        ...pools[id], poolFee, poolVolumes, poolSharePrice, poolShares, poolTotalShares,
+      };
+      setPools(newPoolsArray);
     } catch (e) {
       console.log(e);
     }
-    // setPools({...pools, pools[id]: updatePool});
   };
 
   return (

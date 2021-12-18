@@ -27,16 +27,10 @@ export default function PoolCard({ pool }: {pool:IPool}) {
 
   const tokensArray = [tokenInput, tokenOutput].map(((v) => v.metadata));
   const onClick = () => setSearchModalOpen(true);
+
   useEffect(() => {
-    const timer = setTimeout(async () => {
-      try {
-        updatePool(pool.id);
-      } catch (e) {
-        console.warn(e);
-      }
-    }, 1500);
-    return () => clearTimeout(timer);
-  });
+    updatePool(pool.id);
+  }, []);
 
   const profit = [
     {

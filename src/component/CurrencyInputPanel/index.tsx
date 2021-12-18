@@ -3,8 +3,9 @@ import styled from 'styled-components';
 import { escapeRegExp, inputRegex } from 'utils/index';
 
 interface IInputPanel {
-  value: string,
-  setValue: any,
+  value: string;
+  setValue: any;
+  disabled?: boolean;
 }
 
 export const Input = styled.input`
@@ -19,7 +20,7 @@ export const Input = styled.input`
   text-align: right;
 `;
 
-export default function CurrencyInputPanel({ value, setValue }:IInputPanel) {
+export default function CurrencyInputPanel({ value, setValue, disabled = false }:IInputPanel) {
   const enforcer = (nextUserInput: string) => {
     if (nextUserInput === '' || inputRegex.test(escapeRegExp(nextUserInput))) {
       setValue(nextUserInput);
@@ -37,6 +38,7 @@ export default function CurrencyInputPanel({ value, setValue }:IInputPanel) {
       placeholder="0.0"
       minLength={1}
       maxLength={79}
+      disabled={disabled}
       spellCheck="false"
     />
   );

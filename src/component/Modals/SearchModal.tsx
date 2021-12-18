@@ -4,6 +4,7 @@ import { ReactComponent as CloseIcon } from 'assets/images/close.svg';
 import styled from 'styled-components';
 import { IToken, useStore } from 'store';
 import { formatAmount } from 'utils';
+import Big from 'big.js';
 import {
   Modal, Layout, ModalBlock, ModalTitle, ModalClose,
 } from './styles';
@@ -105,7 +106,7 @@ const SearchRow = ({
             </SearchTitle>
             <SearchSubtitle>{token.metadata.name}</SearchSubtitle>
           </SearchDescriptionBlock>
-          {formatAmount(balances[token.contractId], token.metadata.decimals)}
+          {new Big(formatAmount(balances[token.contractId], token.metadata.decimals)).toFixed(3)}
           {' '}
           {token.metadata.symbol}
         </SearchRowContainer>
