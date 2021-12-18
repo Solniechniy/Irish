@@ -1,6 +1,4 @@
-import React, {
-  Dispatch, SetStateAction, useCallback, useState,
-} from 'react';
+import React, { useCallback, useState } from 'react';
 import CurrencyInputPanel from 'component/CurrencyInputPanel';
 import { ButtonTertiary } from 'component/Button';
 import {

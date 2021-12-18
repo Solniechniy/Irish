@@ -1,6 +1,9 @@
 import React, { useEffect } from 'react';
 import { ButtonTertiary } from 'component/Button';
 import { useStore, IPool, ITokenMetadata } from 'store';
+import { BASE } from 'utils/constants';
+import { STABLE_LP_TOKEN_DECIMALS } from 'services/stable-swap';
+import Big from 'big.js';
 import {
   CardBlock,
   TokenBock,
@@ -47,19 +50,17 @@ export default function PoolCard({ pool }: {pool:IPool}) {
     },
     {
       title: 'Total Shares',
-      value: `$${pool.sharesTotalSupply ?? 0}`,
+      value: `$${new Big(pool.sharesTotalSupply ?? 0).div(new Big(BASE).pow(STABLE_LP_TOKEN_DECIMALS)).toFixed(2)}`,
     },
     {
       title: 'Shares',
-      value: `${pool.poolShares ?? 0} (0%)`,
+      value: `${new Big(pool.poolShares ?? 0).div(new Big(BASE).pow(STABLE_LP_TOKEN_DECIMALS)).toFixed(2)} (0%)`,
     },
     {
       title: 'APY',
       value: '0.65%',
     },
   ];
-
-  const currencyExchange = '1 USDT ≈ 0.9992999 USDC';
 
   return (
     <CardBlock>
@@ -81,9 +82,9 @@ export default function PoolCard({ pool }: {pool:IPool}) {
           </TokenContainer>
         ))}
       </TokenBock>
-      <CurrencyExchange>
+      {/* <CurrencyExchange>
         {currencyExchange}
-      </CurrencyExchange>
+      </CurrencyExchange> */}
       <ProfitBlock>
         {profit.map((el) => (
           <ProfitRow key={el.title}>
