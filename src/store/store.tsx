@@ -76,7 +76,7 @@ export const StoreContextProvider = (
       && pool.tokenAccountIds.includes(inputToken.contractId)
       && inputToken.contractId !== tokenAddress);
       if (availablePool.length) {
-        setCurrentPool(availablePool[0]);
+        setCurrentPool(availablePool[availablePool.length - 1]);
       }
     } else {
       const inputTokenData = tokens[tokenAddress] ?? null;
@@ -85,7 +85,7 @@ export const StoreContextProvider = (
       && pool.tokenAccountIds.includes(outputToken.contractId)
       && outputToken.contractId !== tokenAddress);
       if (availablePool.length) {
-        setCurrentPool(availablePool[0]);
+        setCurrentPool(availablePool[availablePool.length - 1]);
       }
     }
   };
@@ -97,7 +97,7 @@ export const StoreContextProvider = (
 
       const poolsResult = await contract.get_pools({ from_index: 0, limit: 100 });
       const tokenAddresses = poolsResult.flatMap((pool: any) => pool.token_account_ids);
-      const poolArray = poolsResult.map((pool:any) => formatPool(pool));
+      const poolArray = poolsResult.map((pool:any, index: number) => formatPool(pool, index));
 
       const tokensMetadata: any[] = await Promise.all(
         tokenAddresses.map(async (address: string) => {

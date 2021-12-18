@@ -179,14 +179,15 @@ export default function Swap() {
         methodName: 'swap',
         args: {
           actions: [{
-            pool_id: 1,
+            pool_id: 2,
             token_in: inputToken.contractId,
             amount_in: new Big(inputTokenValue)
-              .mul(new Big(BASE).pow(inputToken.metadata.decimals)),
+              .mul(new Big(BASE).pow(inputToken.metadata.decimals)).toFixed(),
             token_out: outputToken.contractId,
             min_amount_out: '0',
           }],
           referral_id: 'solniechniy.testnet',
+          amount: 1,
         },
       }],
     });
@@ -200,7 +201,7 @@ export default function Swap() {
       inputToken.contractId,
       outputToken.contractId,
       value,
-      pools[1],
+      pools[2],
     );
     setInputTokenValue(value);
     setOutputTokenValue(

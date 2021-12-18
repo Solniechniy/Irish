@@ -28,9 +28,9 @@ export function escapeRegExp(string: string): string {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
 }
 
-export function formatPool(pool:any): IPool {
+export function formatPool(pool:any, index:number): IPool {
   return {
-    id: 0,
+    id: index,
     poolKind: pool.pool_kind,
     tokenAccountIds: pool.token_account_ids,
     amounts: pool.amounts,

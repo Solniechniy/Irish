@@ -242,7 +242,7 @@ export default function LiquidityModal() {
         methodName: 'ft_transfer_call',
         args: {
           receiver_id: config.contractId,
-          amount: firstAmount,
+          amount: firstAmount.toFixed(),
           msg: '',
         },
         amount: '0.000000000000000000000001',
@@ -255,7 +255,7 @@ export default function LiquidityModal() {
         methodName: 'ft_transfer_call',
         args: {
           receiver_id: config.contractId,
-          amount: secondAmount,
+          amount: secondAmount.toFixed(),
           msg: '',
         },
         amount: '0.000000000000000000000001',
@@ -267,10 +267,10 @@ export default function LiquidityModal() {
       functionCalls: [{
         methodName: 'add_stable_liquidity',
         args: {
-          pool_id: 0,
+          pool_id: 2,
           amounts: [
-            firstAmount,
-            secondAmount,
+            firstAmount.toFixed(),
+            secondAmount.toFixed(),
           ],
           min_shares: '1',
         },
