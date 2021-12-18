@@ -21,7 +21,7 @@ import {
 
 export default function PoolCard({ pool }: {pool:IPool}) {
   const {
-    tokens, setLiquidityModalOpen, setSearchModalOpen, updatePool,
+    tokens, setLiquidityModalOpen, updatePool,
   } = useStore();
   const [inputToken, outputToken] = pool.tokenAccountIds;
   const tokenInput = tokens[inputToken] ?? null;
@@ -29,7 +29,6 @@ export default function PoolCard({ pool }: {pool:IPool}) {
   if (!tokenInput || !tokenOutput) return null;
 
   const tokensArray = [tokenInput, tokenOutput].map(((v) => v.metadata));
-  const onClick = () => setSearchModalOpen(true);
 
   useEffect(() => {
     updatePool(pool.id);
@@ -67,13 +66,13 @@ export default function PoolCard({ pool }: {pool:IPool}) {
       <TokenBock>
         {tokensArray.map((token: ITokenMetadata) => (
           <TokenContainer key={token.symbol}>
-            <TokenLogo onClick={onClick}>
+            <TokenLogo>
               <img src={token.icon} alt={token.name} />
             </TokenLogo>
-            <TokenTitle onClick={onClick}>
+            <TokenTitle>
               {token.symbol}
             </TokenTitle>
-            <TokenLabel onClick={onClick}>
+            <TokenLabel>
               {token.name}
             </TokenLabel>
             <TokenValue>

@@ -50,7 +50,7 @@ const Input = (
     loading,
   }:
   {
-    openModal: () => void,
+    openModal: (tokenType: TokenType) => void,
     token: IToken | null,
     tokenType: TokenType,
     value: string,
@@ -98,7 +98,7 @@ const Input = (
               {new Big(formatAmount(balance ?? 0, token?.metadata.decimals)).toFixed(3)}
             </WalletInformation>
             <InputContainer>
-              <TokenWrapper onClick={openModal}>
+              <TokenWrapper onClick={() => openModal(tokenType)}>
                 <LogoContainer>
                   <img src={token?.metadata?.icon ?? ''} alt={token?.metadata.symbol} />
                 </LogoContainer>
@@ -149,8 +149,8 @@ export default function Swap() {
   const rightSide = `${outputTokenValue || 1} ${getUpperCase(outputToken?.metadata.symbol ?? '')}`;
 
   const openModal = useCallback(
-    () => {
-      setSearchModalOpen(true);
+    (tokenType: TokenType) => {
+      setSearchModalOpen({ isOpen: true, tokenType });
     },
     [],
   );

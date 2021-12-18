@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ReactComponent as CloseIcon } from 'assets/images/close.svg';
 
 import styled from 'styled-components';
-import { IToken, useStore } from 'store';
+import { initialState, IToken, useStore } from 'store';
 import { formatAmount } from 'utils';
 import Big from 'big.js';
 import {
@@ -83,13 +83,19 @@ const SearchSubtitle = styled.p`
 `;
 
 const SearchRow = ({
-  tokensArray, balances, searchValue, loading,
+  tokensArray, searchValue,
 } : {
   tokensArray: IToken[],
-  balances: { [key: string]: string; },
   searchValue: string,
-  loading: boolean
 }) => {
+  const {
+    isSearchModalOpen,
+    setSearchModalOpen,
+    loading,
+    balances,
+    setCurrentToken,
+  } = useStore();
+
   if (loading) return <h1>Loading</h1>;
 
   return (
@@ -97,7 +103,10 @@ const SearchRow = ({
       {tokensArray.map((token) => (
         <SearchRowContainer
           key={token.metadata.symbol}
-          onClick={() => console.log(token.contractId)}
+          onClick={() => {
+            setCurrentToken(token.contractId, isSearchModalOpen.tokenType);
+            setSearchModalOpen(initialState.isSearchModalOpen);
+          }}
         >
           <img src={token.metadata.icon} alt={token.metadata.symbol} />
           <SearchDescriptionBlock>
@@ -149,14 +158,14 @@ export default function SearchModal() {
 
   return (
     <>
-      {isSearchModalOpen && (
-      <Layout onClick={() => setSearchModalOpen(false)}>
+      {isSearchModalOpen.isOpen && (
+      <Layout onClick={() => setSearchModalOpen(initialState.isSearchModalOpen)}>
         <SearchModalContainer onClick={(e) => e.stopPropagation()}>
           <ModalBlock>
             <ModalTitle>
               Select a token
             </ModalTitle>
-            <ModalClose onClick={() => setSearchModalOpen(false)}>
+            <ModalClose onClick={() => setSearchModalOpen(initialState.isSearchModalOpen)}>
               <CloseIcon />
             </ModalClose>
           </ModalBlock>
@@ -170,9 +179,7 @@ export default function SearchModal() {
           <SearchResults>
             <SearchRow
               tokensArray={tokensArray}
-              balances={balances}
               searchValue={searchValue}
-              loading={loading}
             />
           </SearchResults>
         </SearchModalContainer>

@@ -1,3 +1,4 @@
+import { TokenType } from 'pages/Swap';
 import React, {
   createContext, useContext, useEffect, useState,
 } from 'react';
@@ -11,18 +12,21 @@ import {
 
 const config = getConfig();
 const INITIAL_POOL_ID = 0;
-const initialState: StoreContextType = {
+
+export const initialState: StoreContextType = {
   wallet: null,
   setWallet: () => {},
   pools: [],
   setPools: () => {},
+  currentPool: null,
+  setCurrentPool: () => {},
   loading: false,
   setLoading: () => {},
   isAccountModalOpen: false,
   setAccountModalOpen: () => {},
   isLiquidityModalOpen: false,
   setLiquidityModalOpen: () => {},
-  isSearchModalOpen: false,
+  isSearchModalOpen: { isOpen: false, tokenType: TokenType.Output },
   setSearchModalOpen: () => {},
   tokens: {},
   setTokens: () => {},
@@ -32,9 +36,9 @@ const initialState: StoreContextType = {
   setInputToken: () => {},
   outputToken: null,
   setOutputToken: () => {},
-  setPool: () => {},
   updatePool: () => {},
   contract: null,
+  setCurrentToken: () => {},
 };
 
 const StoreContextHOC = createContext<StoreContextType>(initialState);
@@ -55,19 +59,35 @@ export const StoreContextProvider = (
   const [isLiquidityModalOpen, setLiquidityModalOpen] = useState<boolean>(
     initialState.isLiquidityModalOpen,
   );
-  const [isSearchModalOpen, setSearchModalOpen] = useState<boolean>(
+  const [isSearchModalOpen, setSearchModalOpen] = useState<{isOpen: boolean, tokenType: TokenType}>(
     initialState.isSearchModalOpen,
   );
   const [balances, setBalances] = useState<{[key:string]: string}>(initialState.balances);
   const [inputToken, setInputToken] = useState<IToken | null>(initialState.inputToken);
   const [outputToken, setOutputToken] = useState<IToken | null>(initialState.outputToken);
+  const [currentPool, setCurrentPool] = useState<IPool| null>(initialState.currentPool);
 
-  const setPool = (pool: IPool) => {
-    const [inputTokenAddress, outputTokenAddress] = pool.tokenAccountIds;
-    const inputTokenData = tokens[inputTokenAddress] ?? null;
-    const outputTokenData = tokens[outputTokenAddress] ?? null;
-    setInputToken(inputTokenData);
-    setOutputToken(outputTokenData);
+  const setCurrentToken = (tokenAddress: string, tokenType: TokenType) => {
+    if (!inputToken || !outputToken) return;
+    if (tokenType === TokenType.Output) {
+      const outputTokenData = tokens[tokenAddress] ?? null;
+      setOutputToken(outputTokenData);
+      const availablePool = pools.filter((pool) => pool.tokenAccountIds.includes(tokenAddress)
+      && pool.tokenAccountIds.includes(inputToken.contractId)
+      && inputToken.contractId !== tokenAddress);
+      if (availablePool.length) {
+        setCurrentPool(availablePool[0]);
+      }
+    } else {
+      const inputTokenData = tokens[tokenAddress] ?? null;
+      setInputToken(inputTokenData);
+      const availablePool = pools.filter((pool) => pool.tokenAccountIds.includes(tokenAddress)
+      && pool.tokenAccountIds.includes(outputToken.contractId)
+      && outputToken.contractId !== tokenAddress);
+      if (availablePool.length) {
+        setCurrentPool(availablePool[0]);
+      }
+    }
   };
 
   const initialLoading = async () => {
@@ -115,7 +135,13 @@ export const StoreContextProvider = (
 
   useEffect(() => {
     if (pools.length) {
-      setPool(pools[INITIAL_POOL_ID]);
+      const initialPool = pools[INITIAL_POOL_ID];
+      const outputTokenData = tokens[initialPool.tokenAccountIds[0]] ?? null;
+      setOutputToken(outputTokenData);
+      const inputTokenData = tokens[initialPool.tokenAccountIds[1]] ?? null;
+      setInputToken(inputTokenData);
+
+      setCurrentPool(initialPool);
     }
   }, [pools.length]);
 
@@ -163,9 +189,11 @@ export const StoreContextProvider = (
       setInputToken,
       outputToken,
       setOutputToken,
-      setPool,
+      currentPool,
+      setCurrentPool,
       updatePool,
       contract,
+      setCurrentToken,
     }}
     >
       {children}

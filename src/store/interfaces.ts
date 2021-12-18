@@ -6,6 +6,7 @@ import SpecialWallet from 'services/wallet';
 import logoInputToken from 'assets/images/outputTokenLogo.svg';
 import logoOutputToken from 'assets/images/white-near.svg';
 import rainbowLogo from 'assets/images/rainbow-bridge.png';
+import { TokenType } from 'pages/Swap';
 
 export enum StatusLink { 'Swap', 'Pool' }
 export interface IPool {
@@ -45,21 +46,23 @@ export type StoreContextType = {
   setAccountModalOpen: Dispatch<SetStateAction<boolean>>;
   isLiquidityModalOpen: boolean;
   setLiquidityModalOpen: Dispatch<SetStateAction<boolean>>;
-  isSearchModalOpen: boolean;
-  setSearchModalOpen: Dispatch<SetStateAction<boolean>>;
+  isSearchModalOpen: {isOpen: boolean, tokenType: TokenType};
+  setSearchModalOpen: Dispatch<SetStateAction<{isOpen: boolean, tokenType: TokenType}>>;
   pools: IPool[];
   setPools: Dispatch<SetStateAction<IPool[]>>;
   tokens: {[key: string]: IToken};
   setTokens: Dispatch<SetStateAction<{[key: string]: IToken}>>;
   balances: {[key: string]: string};
   setBalances: Dispatch<SetStateAction<{[key: string]: string}>>;
-  inputToken: IToken | null,
-  setInputToken: Dispatch<SetStateAction<IToken | null>>,
-  outputToken: IToken | null,
-  setOutputToken: Dispatch<SetStateAction<IToken | null>>,
-  setPool: (pool: IPool) => void
+  inputToken: IToken | null;
+  setInputToken: Dispatch<SetStateAction<IToken | null>>;
+  outputToken: IToken | null;
+  setOutputToken: Dispatch<SetStateAction<IToken | null>>;
   updatePool: (id: number) => void;
   contract: any;
+  currentPool: IPool | null;
+  setCurrentPool: (pool: IPool) => void;
+  setCurrentToken: (tokenAddress: string, tokenType: TokenType) => void;
 }
 
 interface IInformation {
