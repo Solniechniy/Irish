@@ -17,7 +17,7 @@ export const ActionContainer = styled.div`
   justify-content: center;
   flex-direction: column;
   padding: 10px 38px 27px 26px;
-  min-width: 721px;
+  width: 624px;
   height: 325px;
 `;
 

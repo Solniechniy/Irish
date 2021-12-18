@@ -134,7 +134,7 @@ const TokensBlock = (
   const setHalfAmount = () => {
     if (!balance) return;
     const newBalance = maxAmount.div(2);
-    setValue(formatAmount(newBalance.toString(), token?.metadata.decimals));
+    setValue(formatAmount(newBalance.toFixed(), token?.metadata.decimals));
   };
 
   const setMaxAmount = () => {
