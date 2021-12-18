@@ -11,7 +11,7 @@ import {
 } from './interfaces';
 
 const config = getConfig();
-const INITIAL_POOL_ID = 0;
+const INITIAL_POOL_ID = 1;
 
 export const initialState: StoreContextType = {
   wallet: null,

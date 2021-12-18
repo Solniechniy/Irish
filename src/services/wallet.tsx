@@ -2,9 +2,12 @@
 /* eslint-disable max-classes-per-file */
 import { baseDecode } from 'borsh';
 import { ConnectedWalletAccount, Near, WalletConnection } from 'near-api-js';
-import { Action, createTransaction } from 'near-api-js/lib/transaction';
+import { Action, createTransaction, functionCall } from 'near-api-js/lib/transaction';
 import { PublicKey } from 'near-api-js/lib/utils';
 import * as nearAPI from 'near-api-js';
+import {
+  Transaction, getGas, getAmount,
+} from 'services/near';
 
 class SpecialWalletAccount extends ConnectedWalletAccount {
   async sendTransactionWithActions(receiverId: string, actions: Action[]) {
@@ -106,3 +109,22 @@ export function createContract(wallet: SpecialWallet,
     },
   );
 }
+
+export const sendTransactions = async (
+  transactions: Transaction[], walletInstance: SpecialWallet,
+) => {
+  const nearTransactions = await Promise.all(
+    transactions.map((t, i) => walletInstance.createTransaction({
+      receiverId: t.receiverId,
+      nonceOffset: i + 1,
+      actions: t.functionCalls.map((fc: any) => functionCall(
+        fc.methodName,
+        fc.args,
+        getGas(fc.gas),
+        getAmount(fc.amount),
+      )),
+    })),
+  );
+
+  walletInstance.requestSignTransactions({ transactions: nearTransactions });
+};

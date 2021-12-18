@@ -8,11 +8,11 @@ export interface ITrustedToken {
 }
 
 export const trustedTokens: {[key:string]: ITrustedToken} = {
-  'token.solniechniy.testnet': {
+  'dev-1639816390712-31298106219975': {
     logo: rainbowLogo,
     title: 'Rainbow bridge',
   },
-  'ref.fakes.testnet': {
+  'dev-1639816884562-67618928163122': {
     logo: allBridgeLogo,
     title: 'Allbridge',
   },

@@ -8,6 +8,10 @@ import { ReactComponent as Wallet } from 'assets/images/wallet.svg';
 import { IToken, useStore } from 'store';
 import { formatAmount, getUpperCase } from 'utils';
 import { ButtonTertiary } from 'component/Button';
+import getConfig from 'services/config';
+import { BASE } from 'utils/constants';
+import { Transaction, wallet } from 'services/near';
+import { sendTransactions } from 'services/wallet';
 import {
   Modal, Layout, ModalBlock, ModalClose,
 } from './styles';
@@ -178,9 +182,7 @@ export default function LiquidityModal() {
     isLiquidityModalOpen,
     setLiquidityModalOpen,
     inputToken,
-    setInputToken,
     outputToken,
-    setOutputToken,
     balances,
     loading,
   } = useStore();
@@ -189,6 +191,95 @@ export default function LiquidityModal() {
 
   const firstBalance = new Big(balances[inputToken?.contractId ?? ''] ?? '1');
   const secondBalance = new Big(balances[outputToken?.contractId ?? ''] ?? '1');
+
+  const deposit = () => {
+    if (!inputToken || !outputToken) return;
+    const firstAmount = new Big(inputTokenValue)
+      .mul(new Big(BASE).pow(inputToken.metadata.decimals));
+    const secondAmount = new Big(inputTokenValue)
+      .mul(new Big(BASE).pow(outputToken.metadata.decimals));
+    const config = getConfig();
+    const transactions: Transaction[] = [];
+    transactions.push({
+      receiverId: inputToken.contractId,
+      functionCalls: [{
+        methodName: 'storage_deposit',
+        args: {
+          account_id: config.contractId,
+          registration_only: true,
+        },
+      }],
+    });
+
+    transactions.push({
+      receiverId: outputToken.contractId,
+      functionCalls: [{
+        methodName: 'storage_deposit',
+        args: {
+          account_id: config.contractId,
+          registration_only: true,
+        },
+      }],
+    });
+
+    transactions.push({
+      receiverId: config.contractId,
+      functionCalls: [{
+        methodName: 'register_tokens',
+        args: {
+          token_ids: [
+            inputToken.contractId,
+            outputToken.contractId,
+          ],
+        },
+        amount: '0.000000000000000000000001',
+      }],
+    });
+
+    transactions.push({
+      receiverId: inputToken.contractId,
+      functionCalls: [{
+        methodName: 'ft_transfer_call',
+        args: {
+          receiver_id: config.contractId,
+          amount: firstAmount,
+          msg: '',
+        },
+        amount: '0.000000000000000000000001',
+      }],
+    });
+
+    transactions.push({
+      receiverId: outputToken.contractId,
+      functionCalls: [{
+        methodName: 'ft_transfer_call',
+        args: {
+          receiver_id: config.contractId,
+          amount: secondAmount,
+          msg: '',
+        },
+        amount: '0.000000000000000000000001',
+      }],
+    });
+
+    transactions.push({
+      receiverId: config.contractId,
+      functionCalls: [{
+        methodName: 'add_stable_liquidity',
+        args: {
+          pool_id: 0,
+          amounts: [
+            firstAmount,
+            secondAmount,
+          ],
+          min_shares: '1',
+        },
+        amount: '0.000000000000000000000001',
+      }],
+    });
+
+    sendTransactions(transactions, wallet);
+  };
 
   return (
     <>
@@ -223,7 +314,7 @@ export default function LiquidityModal() {
               maxAmount={firstBalance.lt(secondBalance) ? firstBalance : secondBalance}
             />
             <ButtonTertiary
-              onClick={() => console.log('Add Liquidity')}
+              onClick={deposit}
             >
               Add Liquidity
             </ButtonTertiary>

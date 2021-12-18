@@ -2,21 +2,21 @@ import React, { useCallback, useState } from 'react';
 import CurrencyInputPanel from 'component/CurrencyInputPanel';
 import { ButtonTertiary } from 'component/Button';
 import {
-  Transaction, wallet, getGas, getAmount,
+  Transaction, wallet,
 } from 'services/near';
 import { ReactComponent as PlaceholderToken } from 'assets/images/placeholder-logo.svg';
 import { ReactComponent as PlaceholderSymbol } from 'assets/images/placeholder-symbol.svg';
 import { ReactComponent as PlaceholderMinterTitle } from 'assets/images/placeholder-minter-title.svg';
 import { ReactComponent as PlaceholderWallet } from 'assets/images/placeholder-wallet.svg';
-import { functionCall } from 'near-api-js/lib/transaction';
 
 import { formatAmount, getUpperCase } from 'utils/index';
 import { IToken, useStore } from 'store';
 import { BASE, trustedTokens } from 'utils/constants';
-import SpecialWallet from 'services/wallet';
+
 import getConfig from 'services/config';
 import Big from 'big.js';
 import { getSwappedAmount } from 'services/stable-swap';
+import { sendTransactions } from 'services/wallet';
 import {
   Container,
   ActionContainer,
@@ -168,23 +168,6 @@ export default function Swap() {
     ? 'Swap'
     : 'Connect wallet';
 
-  const sendTransactions = async (transactions: Transaction[], walletInstance: SpecialWallet) => {
-    const nearTransactions = await Promise.all(
-      transactions.map((t, i) => walletInstance.createTransaction({
-        receiverId: t.receiverId,
-        nonceOffset: i + 1,
-        actions: t.functionCalls.map((fc: any) => functionCall(
-          fc.methodName,
-          fc.args,
-          getGas(fc.gas),
-          getAmount(fc.amount),
-        )),
-      })),
-    );
-
-    walletInstance.requestSignTransactions({ transactions: nearTransactions });
-  };
-
   const swap = () => {
     if (!inputToken || !outputToken) return;
 
@@ -196,7 +179,7 @@ export default function Swap() {
         methodName: 'swap',
         args: {
           actions: [{
-            pool_id: 0,
+            pool_id: 1,
             token_in: inputToken.contractId,
             amount_in: new Big(inputTokenValue)
               .mul(new Big(BASE).pow(inputToken.metadata.decimals)),
@@ -217,7 +200,7 @@ export default function Swap() {
       inputToken.contractId,
       outputToken.contractId,
       value,
-      pools[0],
+      pools[1],
     );
     setInputTokenValue(value);
     setOutputTokenValue(
