@@ -115,7 +115,9 @@ const SearchRow = ({
             </SearchTitle>
             <SearchSubtitle>{token.metadata.name}</SearchSubtitle>
           </SearchDescriptionBlock>
-          {new Big(formatAmount(balances[token.contractId], token.metadata.decimals)).toFixed(3)}
+          {new Big(
+            formatAmount(balances[token.contractId] ?? 0, token.metadata.decimals),
+          ).toFixed(3)}
           {' '}
           {token.metadata.symbol}
         </SearchRowContainer>
